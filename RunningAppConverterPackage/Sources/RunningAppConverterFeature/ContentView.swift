@@ -64,7 +64,7 @@ private struct PaceConverterScreen: View {
                         placeholder: "7:40",
                         text: $input,
                         unitLabel: selectedUnit.paceLabel,
-                        keyboardType: .numbersAndPunctuation,
+                        keyboardType: .numberPad,
                         onUnitTap: toggleUnit
                     )
                     .onChange(of: input) { _, value in
@@ -77,7 +77,7 @@ private struct PaceConverterScreen: View {
                             placeholder: "6:00",
                             text: $rangeStartInput,
                             unitLabel: selectedUnit.paceLabel,
-                            keyboardType: .numbersAndPunctuation,
+                            keyboardType: .numberPad,
                             onUnitTap: toggleUnit
                         )
                         .onChange(of: rangeStartInput) { _, value in
@@ -89,7 +89,7 @@ private struct PaceConverterScreen: View {
                             placeholder: "6:30",
                             text: $rangeEndInput,
                             unitLabel: selectedUnit.paceLabel,
-                            keyboardType: .numbersAndPunctuation,
+                            keyboardType: .numberPad,
                             onUnitTap: toggleUnit
                         )
                         .onChange(of: rangeEndInput) { _, value in
@@ -467,7 +467,7 @@ private struct TimeConverterScreen: View {
                     placeholder: "7:40",
                     text: $paceInput,
                     unitLabel: selectedUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: paceInput) { _, value in
@@ -479,7 +479,7 @@ private struct TimeConverterScreen: View {
                     placeholder: "6:00",
                     text: $fasterPaceInput,
                     unitLabel: selectedUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: fasterPaceInput) { _, value in
@@ -491,7 +491,7 @@ private struct TimeConverterScreen: View {
                     placeholder: "6:30",
                     text: $slowerPaceInput,
                     unitLabel: selectedUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: slowerPaceInput) { _, value in
@@ -547,7 +547,7 @@ private struct TimeConverterScreen: View {
                     label: "Target Time",
                     placeholder: "20:00",
                     text: $targetTimeInput,
-                    keyboardType: .numbersAndPunctuation
+                    keyboardType: .numberPad
                 )
                 .onChange(of: targetTimeInput) { _, value in
                     updateTargetTimeInput(value, binding: $targetTimeInput, error: $targetError)
@@ -557,7 +557,7 @@ private struct TimeConverterScreen: View {
                     label: "From Time",
                     placeholder: "20:00",
                     text: $targetTimeFromInput,
-                    keyboardType: .numbersAndPunctuation
+                    keyboardType: .numberPad
                 )
                 .onChange(of: targetTimeFromInput) { _, value in
                     updateTargetTimeInput(value, binding: $targetTimeFromInput, error: $targetError)
@@ -567,7 +567,7 @@ private struct TimeConverterScreen: View {
                     label: "To Time",
                     placeholder: "22:00",
                     text: $targetTimeToInput,
-                    keyboardType: .numbersAndPunctuation
+                    keyboardType: .numberPad
                 )
                 .onChange(of: targetTimeToInput) { _, value in
                     updateTargetTimeInput(value, binding: $targetTimeToInput, error: $targetError)
@@ -1306,7 +1306,7 @@ private struct PaceTargetEditor: View {
                     placeholder: "6:30",
                     text: $target.valueText,
                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: target.valueText) { _, value in
@@ -1320,7 +1320,7 @@ private struct PaceTargetEditor: View {
                     placeholder: "6:00",
                     text: $target.fasterText,
                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: target.fasterText) { _, value in
@@ -1332,7 +1332,7 @@ private struct PaceTargetEditor: View {
                     placeholder: "6:30",
                     text: $target.slowerText,
                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
-                    keyboardType: .numbersAndPunctuation,
+                    keyboardType: .numberPad,
                     onUnitTap: toggleUnit
                 )
                 .onChange(of: target.slowerText) { _, value in
@@ -1433,7 +1433,7 @@ private struct IntervalSectionEditor<Trailing: View>: View {
                     label: "Time",
                     placeholder: "02:00",
                     text: $section.durationText,
-                    keyboardType: .numbersAndPunctuation
+                    keyboardType: .numberPad
                 )
                 .onChange(of: section.durationText) { _, value in
                     section.durationText = RunningConversions.sanitizeDurationInput(value)
