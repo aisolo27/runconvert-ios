@@ -33,7 +33,6 @@ public struct ContentView: View {
                 Label("Workout", systemImage: "figure.run")
             }
         }
-        .tint(.primary)
     }
 }
 
@@ -887,16 +886,35 @@ private struct ConverterScrollView<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                content
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    content
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .topLeading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    dismissKeyboard()
+                }
             }
-            .padding(16)
         }
         .background(Color(.systemGroupedBackground))
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    dismissKeyboard()
+                }
+            }
+        }
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
