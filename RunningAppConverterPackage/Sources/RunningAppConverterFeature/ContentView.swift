@@ -903,14 +903,6 @@ private struct ConverterScrollView<Content: View>: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    dismissKeyboard()
-                }
-            }
-        }
     }
 
     private func dismissKeyboard() {
@@ -963,8 +955,10 @@ private struct UnitTextField: View {
             HStack(spacing: 8) {
                 TextField(placeholder, text: $text)
                     .keyboardType(keyboardType)
+                    .submitLabel(.done)
                     .textInputAutocapitalization(.never)
                     .font(.title2.monospacedDigit())
+                    .numericKeyboardDoneToolbar()
 
                 Button(unitLabel, action: onUnitTap)
                     .buttonStyle(.bordered)
@@ -994,6 +988,7 @@ private struct PlainTextField: View {
 
             TextField(placeholder, text: $text)
                 .keyboardType(keyboardType)
+                .submitLabel(.done)
                 .textInputAutocapitalization(.never)
                 .font(.title3.monospacedDigit())
                 .padding(12)
@@ -1003,6 +998,20 @@ private struct PlainTextField: View {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(Color(.separator).opacity(0.5), lineWidth: 1)
                 }
+                .numericKeyboardDoneToolbar()
+        }
+    }
+}
+
+private extension View {
+    func numericKeyboardDoneToolbar() -> some View {
+        toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
+            }
         }
     }
 }
