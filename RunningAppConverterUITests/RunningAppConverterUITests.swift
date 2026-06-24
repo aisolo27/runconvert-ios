@@ -22,4 +22,19 @@ final class RunningAppConverterUITests: XCTestCase {
         app.tabBars.buttons["Workout"].tap()
         XCTAssertTrue(app.staticTexts["Workout Converter"].waitForExistence(timeout: 2))
     }
+
+    @MainActor
+    func testDistanceKeyboardShowsDoneButton() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        app.tabBars.buttons["Distance"].tap()
+        XCTAssertTrue(app.staticTexts["Distance Converter"].waitForExistence(timeout: 2))
+
+        let distanceField = app.textFields.firstMatch
+        XCTAssertTrue(distanceField.waitForExistence(timeout: 2))
+        distanceField.tap()
+
+        XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 3))
+    }
 }

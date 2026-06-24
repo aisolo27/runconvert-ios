@@ -903,6 +903,7 @@ private struct ConverterScrollView<Content: View>: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .numericKeyboardDoneToolbar()
     }
 
     private func dismissKeyboard() {
@@ -958,7 +959,6 @@ private struct UnitTextField: View {
                     .submitLabel(.done)
                     .textInputAutocapitalization(.never)
                     .font(.title2.monospacedDigit())
-                    .numericKeyboardDoneToolbar()
 
                 Button(unitLabel, action: onUnitTap)
                     .buttonStyle(.bordered)
@@ -998,7 +998,6 @@ private struct PlainTextField: View {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(Color(.separator).opacity(0.5), lineWidth: 1)
                 }
-                .numericKeyboardDoneToolbar()
         }
     }
 }
