@@ -12,4 +12,4 @@ Light and dark capture runs each passed 1 selected UI test with zero failures an
 
 ![All ten layouts](review.jpg)
 
-App Store Connect readback: all 20 assets uploaded and selected on version 1.0.2, 10/10 in both medium/large slots. Exact ordering and provider IDs are in the manifest. The version remains Prepare for Submission; assets are not yet reviewed or public.
+App Store Connect readback: all 20 assets uploaded and selected on version 1.0.2, 10/10 in both medium/large slots. Exact ordering and provider IDs are in the manifest. Version 1.0.2 (3) was submitted October 11 at 9:38 AM EDT and independently verified Waiting for Review. These graphics accompany the App Store update; approval/publication remains pending.
