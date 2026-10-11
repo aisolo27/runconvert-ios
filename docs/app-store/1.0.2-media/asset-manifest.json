@@ -19,6 +19,21 @@
       "app_ui_generated": false
     },
     {
+      "file": "screenshots-large/01-pace-light.png",
+      "theme": "light",
+      "source": "native/light/01-pace.png",
+      "source_sha256": "22df147ec2630cabdba7fc75a8d6779e5eaa24f5358cf6d861040a0582edd656",
+      "sha256": "596753a21314cecbc2d46745b85c0632a611bc4675a81e8b28191b4015841cc5",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Your pace. In either unit.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
       "file": "screenshots/02-distance-light.png",
       "theme": "light",
       "source": "native/light/02-distance.png",
@@ -27,6 +42,21 @@
       "dimensions": [
         1206,
         2622
+      ],
+      "mode": "RGB",
+      "title": "Kilometers. Miles. Sorted.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots-large/02-distance-light.png",
+      "theme": "light",
+      "source": "native/light/02-distance.png",
+      "source_sha256": "1950cc81b3e3d6d0a00c6e99f40c0a27fa6cc58ca39bdf1f6137edb2995b40a2",
+      "sha256": "f5368fbe41345ff233cc4e6b25273090482d097544d1198242eee070acc245fd",
+      "dimensions": [
+        1320,
+        2868
       ],
       "mode": "RGB",
       "title": "Kilometers. Miles. Sorted.",
@@ -49,6 +79,21 @@
       "app_ui_generated": false
     },
     {
+      "file": "screenshots-large/03-time-light.png",
+      "theme": "light",
+      "source": "native/light/03-time.png",
+      "source_sha256": "551a9d7c1c62d2f6f1dab5d540b5cf1929a87b0bd04ecc2716a60485a59c7180",
+      "sha256": "3e6aee1602a1ee8e18f5b3a782b62fcabf4d7af1b13375b5a2e7bc784fca3c4d",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Set your time. Find your race pace.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
       "file": "screenshots/04-workout-light.png",
       "theme": "light",
       "source": "native/light/04-workout.png",
@@ -57,6 +102,21 @@
       "dimensions": [
         1206,
         2622
+      ],
+      "mode": "RGB",
+      "title": "Keep the workout. Change the units.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots-large/04-workout-light.png",
+      "theme": "light",
+      "source": "native/light/04-workout.png",
+      "source_sha256": "a32f94246c1702632046f113f1a544960a23d135601bbc11305fe3a5d13eb64b",
+      "sha256": "ac0f8fca5b9a2bda8b848a2317ae8a7837ce2582af2ee7a80656d523313d7b40",
+      "dimensions": [
+        1320,
+        2868
       ],
       "mode": "RGB",
       "title": "Keep the workout. Change the units.",
@@ -79,6 +139,21 @@
       "app_ui_generated": false
     },
     {
+      "file": "screenshots-large/05-intervals-light.png",
+      "theme": "light",
+      "source": "native/light/05-intervals.png",
+      "source_sha256": "34656c9861d79284640b0c80fc90d20bc5a5cb69b0aa1e576081843fb55f1821",
+      "sha256": "206966de8aa687a1df7ba2cdd1e6efb1e15524a6b01236e3b5f875b2fa4f269d",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Work. Recover. Repeat.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
       "file": "screenshots/01-pace-dark.png",
       "theme": "dark",
       "source": "native/dark/01-pace.png",
@@ -87,6 +162,21 @@
       "dimensions": [
         1206,
         2622
+      ],
+      "mode": "RGB",
+      "title": "Your pace. In either unit.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots-large/01-pace-dark.png",
+      "theme": "dark",
+      "source": "native/dark/01-pace.png",
+      "source_sha256": "81313ac2237a7d7fdb0aa856ebb894baefbee564b550e6a0f33e5b0362d51d28",
+      "sha256": "f2079962fe1deb84030dd0cb33aede334350e7221bff1d4e4180f72175c69ec8",
+      "dimensions": [
+        1320,
+        2868
       ],
       "mode": "RGB",
       "title": "Your pace. In either unit.",
@@ -109,6 +199,21 @@
       "app_ui_generated": false
     },
     {
+      "file": "screenshots-large/02-distance-dark.png",
+      "theme": "dark",
+      "source": "native/dark/02-distance.png",
+      "source_sha256": "6a75a332df12d41d5af15badcd8e2cd7cf5544b6bf5f6a8290b8da4c08bd49ee",
+      "sha256": "40761a46b6cebe76f5705bcb98809c5a84d8012e119759b0305f6453a9d246b0",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Kilometers. Miles. Sorted.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
       "file": "screenshots/03-time-dark.png",
       "theme": "dark",
       "source": "native/dark/03-time.png",
@@ -117,6 +222,21 @@
       "dimensions": [
         1206,
         2622
+      ],
+      "mode": "RGB",
+      "title": "Set your time. Find your race pace.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots-large/03-time-dark.png",
+      "theme": "dark",
+      "source": "native/dark/03-time.png",
+      "source_sha256": "681f7d0f16c8fe6efeafabb80df933ee42d3d14369f39cd560fae65eccedb2c6",
+      "sha256": "e0364b057dcf9c3626ce105997de2473bc8f79e9345f1b2edbd5afc1c0eb0607",
+      "dimensions": [
+        1320,
+        2868
       ],
       "mode": "RGB",
       "title": "Set your time. Find your race pace.",
@@ -139,6 +259,21 @@
       "app_ui_generated": false
     },
     {
+      "file": "screenshots-large/04-workout-dark.png",
+      "theme": "dark",
+      "source": "native/dark/04-workout.png",
+      "source_sha256": "8b144321c7ec388a1cc9b5e2b6bb563fe7ea72483ba544220ea7bb7e93ccd090",
+      "sha256": "16ea49f78f95f61f174b4c2dd8e7d50817abfe6cefce3bd8806f3fb4aeb1c0ea",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Keep the workout. Change the units.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
       "file": "screenshots/05-intervals-dark.png",
       "theme": "dark",
       "source": "native/dark/05-intervals.png",
@@ -152,6 +287,60 @@
       "title": "Work. Recover. Repeat.",
       "capture": "Actual 1.0.2 Simulator UI; asserted results",
       "app_ui_generated": false
+    },
+    {
+      "file": "screenshots-large/05-intervals-dark.png",
+      "theme": "dark",
+      "source": "native/dark/05-intervals.png",
+      "source_sha256": "ee48f5b684a02a444f9c5f0c6efe2a486b4df7904af571a576b08e5ea4f83cd3",
+      "sha256": "5d4c0d32bcc8fdf87ee5fa9b6229791bf801a2fddc4c80285341de538bec5b86",
+      "dimensions": [
+        1320,
+        2868
+      ],
+      "mode": "RGB",
+      "title": "Work. Recover. Repeat.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
     }
-  ]
+  ],
+  "display_order": [
+    "01-pace-light",
+    "03-time-dark",
+    "02-distance-light",
+    "04-workout-dark",
+    "05-intervals-light",
+    "01-pace-dark",
+    "03-time-light",
+    "02-distance-dark",
+    "04-workout-light",
+    "05-intervals-dark"
+  ],
+  "provider_stage": "Uploaded and selected on editable 1.0.2 draft, 10 screenshots in each medium/large slot; not submitted for review",
+  "provider_assets": {
+    "medium": {
+      "01-pace-light": "38c00019-64fa-855b-8f12-f38766f25fff",
+      "03-time-dark": "63c00019-64fa-855b-8f12-d90e455b303b",
+      "02-distance-light": "4d400019-64fa-855b-8f2b-59f7e2a9f56e",
+      "04-workout-dark": "92400019-64fa-855b-8f21-397cff0847be",
+      "05-intervals-light": "34000019-64fa-855b-8f11-cf1771045706",
+      "01-pace-dark": "36c00019-64fa-855b-8f2c-818eaa82b4ad",
+      "03-time-light": "e9c00019-64fa-855b-8f30-6e246fbe7426",
+      "02-distance-dark": "60800019-64fa-855b-8f15-f8e5b1ff6f7b",
+      "04-workout-light": "87c00019-64fa-855b-8f2d-018951dc9955",
+      "05-intervals-dark": "5fc00019-64fa-855b-8f16-7213c23ef415"
+    },
+    "large": {
+      "01-pace-light": "a9400019-64fa-855b-8f22-a9c6d4610057",
+      "03-time-dark": "8e000019-64fa-855b-8f3c-0b599e8f2087",
+      "02-distance-light": "ebc00019-64fa-855b-8f04-8e67e7b0f654",
+      "04-workout-dark": "e7000019-64fa-855b-8f02-8308dd09d661",
+      "05-intervals-light": "cf000019-64fa-855b-8f10-70932823cf9c",
+      "01-pace-dark": "d0000019-64fa-855b-8f0f-d3f7d8fb94b5",
+      "03-time-light": "28400019-64fa-855b-8f09-3b36deb62a2b",
+      "02-distance-dark": "6d000019-64fa-855b-8f18-6815513739fe",
+      "04-workout-light": "44800019-64fa-855b-8f1c-9ba433949e38",
+      "05-intervals-dark": "20400019-64fa-855b-8f1e-68be72e9ab27"
+    }
+  }
 }

@@ -54,3 +54,7 @@ The full primary matrix ran on iPhone 17 / iOS 27.0. Narrow-screen iOS 26.5 vali
 - [Simulator audit and regression tests](</Users/adrielsolorzano/Documents/Codex Projects/ios convertor running distances/RunningAppConverterUITests/RunningAppConverterUITests.swift>)
 
 Original footage remains in Downloads. No source media was uploaded externally. Unrelated working-tree changes were preserved. Simulator proof does not establish a physical-device install or App Store release. Pace retains its existing input limit of 59 minutes and 59 seconds; timed/open interval steps do not add estimated distance. This audit covers the recorded behavior and representative mode/unit fixtures, not every conceivable value or sequence.
+
+## October 11 physical and release continuation
+
+[Physical iPhone checks](physical-iphone.md) passed 51 normal-size mode/unit checkpoints through iPhone Mirroring. The owner stopped the large-text phone check; normal app text was restored without changing iPhone Settings. Release 1.0.2 (3) was installed and smoke-tested, GitHub main was pushed, and Apple processed the uploaded build. [Current release record](../app-store/release-1.0.2-2026-10-11.md) retains build/media status. Earlier local-only statements and hashes in this audit describe its completion before the physical/release continuation.

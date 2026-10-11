@@ -38,3 +38,7 @@ Marketing submissions and source research remain in [the Personal OS implementat
 ## Pending Apple outcomes
 
 The app update has no remaining build/upload/submission step. After approval, verify automatic release and the public 1.0.1 name/copy. Header/search asset approval still needs supported placement/crop preview and publication; keep PPO comparisons consistent. Verify CPP availability and actual PPO Running before claiming either is live. No review-monitoring automation was created.
+
+## October 11 follow-up
+
+App Store Connect independently showed 1.0.1 (2) **Ready for Distribution** during preparation of 1.0.2. The October 10 review-state descriptions above are dated historical evidence. A new public-listing fetch was not part of this follow-up. [Next update](release-1.0.2-2026-10-11.md).

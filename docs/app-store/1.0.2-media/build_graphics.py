@@ -79,9 +79,19 @@ def build():
                 'sha256':sha(out), 'dimensions':[1206,2622], 'mode':'RGB',
                 'title':line1+' '+line2, 'capture':'Actual 1.0.2 Simulator UI; asserted results',
                 'app_ui_generated':False})
+            # Re-render the vector layout for the optional large display slot;
+            # the embedded native UI remains the same verified capture.
+            large = ROOT/'screenshots-large'/f'{slug}-{theme}.png'
+            large.parent.mkdir(exist_ok=True)
+            with fitz.open(pdf) as document:
+                document[0].get_pixmap(matrix=fitz.Matrix(1320/1206,2868/2622), alpha=False).save(large)
+            rendered_large = Image.open(large)
+            assert rendered_large.size == (1320,2868) and rendered_large.mode == 'RGB'
+            records.append({**records[-1], 'file':str(large.relative_to(ROOT)),
+                'sha256':sha(large), 'dimensions':[1320,2868]})
     (ROOT/'asset-manifest.json').write_text(json.dumps({'version':'1.0.2',
         'build':'3','date':'2026-10-11','assets':records},indent=2)+'\n')
-    print('Exported 10 screenshots with unchanged native UI, 1206 x 2622, RGB.')
+    print('Exported 10 designs in medium and large sizes, 20 RGB files with unchanged native UI.')
 
 if __name__ == '__main__':
     build()

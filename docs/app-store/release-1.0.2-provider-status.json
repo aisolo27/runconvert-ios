@@ -1,0 +1,23 @@
+{
+  "verified_date": "2026-10-11",
+  "app_id": "6816769371",
+  "bundle_id": "com.aisolo.runconvert",
+  "version": "1.0.2",
+  "build": "3",
+  "build_id": "5079ce59-3a39-487a-842d-6e78c524abc9",
+  "testflight_build_status": "Ready to Submit",
+  "app_version_status": "Prepare for Submission",
+  "build_selected_and_saved": true,
+  "build_selection_verified_after_reload": true,
+  "uploaded_screenshot_assets": 20,
+  "designs": 10,
+  "medium_slot_count": 10,
+  "large_slot_count": 10,
+  "app_review_submitted": false,
+  "app_store_released": false,
+  "physical_mode_checkpoints_passed": 51,
+  "physical_largest_text_check": "owner waived; normal restored",
+  "artifact_directory": "/Users/adrielsolorzano/Library/Developer/RunConvertReleases/2026-10-11-1.0.2-build-3/",
+  "ipa_sha256": "9057ca124438257611b31fd6bc86b422992c7321d504418a5eec6dd5b8afc76c",
+  "archive_source_commit": "92c50b34af82c2a702184633e562a1ef11a97d8e"
+}

@@ -14,7 +14,15 @@ Bundle com.aisolo.runconvert, team GQF7RG5Z88, App Store record 6816769371 are u
 
 ## Distribution stage
 
-Archive/upload and processed-build verification pending at this checkpoint. Do not equate the editable App Store Connect draft with review submission or release. Later readbacks below will record the achieved stage.
+Xcode Organizer created the iOS archive at 9:16 AM EDT and confirmed upload at 9:21 AM EDT. Built archive and exported IPA independently confirm 1.0.2 (3), com.aisolo.runconvert, arm64/iphoneos27.0, and valid codesigning. Distribution entitlements have get-task-allow=false; version/build management was disabled so build 3 was preserved.
+
+Apple processing completed. [Build 3](https://appstoreconnect.apple.com/teams/699b640b-05de-4a3a-9ea8-b324ca54c8c7/apps/6816769371/testflight/ios/5079ce59-3a39-487a-842d-6e78c524abc9) was independently read back **Ready to Submit**, then selected and saved on [version 1.0.2](https://appstoreconnect.apple.com/apps/6816769371/distribution/ios/version/inflight). Reload confirmed the selected build persisted. Version remains **Prepare for Submission**. No App Review submission or public App Store release was performed.
+
+Ten new screenshot designs were uploaded at both medium (1206 x 2622) and large (1320 x 2868) sizes, 20 assets total. Each slot independently shows 10/10 in the order Pace light, Time dark, Distance light, Normal Run dark, Intervals light, then the alternate theme for each. Older screenshots were detached from this draft's large slot; Apple's confirmation stated they remain in Asset Library. [Provider IDs and file hashes](1.0.2-media/asset-manifest.json) preserve exact identities. These assets are uploaded/selected drafts, not approved/public graphics.
+
+Verified source and media were committed and pushed to GitHub main as 92c50b3. Final project records and large-size exports were also promoted to main. Xcode automatically aligned four shared-scheme BuildableName references with RunConvert.app/RunConvert.xctest; target IDs and scheme actions were unchanged.
+
+Remaining gate: owner authorization to submit the concrete 1.0.2 (3) package for App Review. Before that submission, check current PPO status because the default-page screenshots changed; the existing CPP/PPO marketing submission is separate and was not changed by this task.
 
 ## Recoverable artifacts
 
