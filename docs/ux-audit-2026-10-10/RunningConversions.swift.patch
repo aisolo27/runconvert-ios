@@ -1,0 +1,50 @@
+--- /tmp/runconvert-ux-audit-before/RunningConversions.swift	2026-09-27 17:01:51
++++ /Users/adrielsolorzano/Documents/Codex Projects/ios convertor running distances/RunningAppConverterPackage/Sources/RunningAppConverterFeature/RunningConversions.swift	2026-10-10 23:34:16
+@@ -287,6 +287,10 @@
+ 
+         for character in normalized {
+             if character.isWholeNumber {
++                output.append(character)
++            } else if character == "-" {
++                // Preserve a pasted sign so validation can reject a negative distance;
++                // stripping it would silently turn -1 into a valid positive 1.
+                 output.append(character)
+             } else if character == ".", !hasDecimal {
+                 output.append(character)
+@@ -298,6 +302,9 @@
+     }
+ 
+     public static func sanitizePaceInput(_ value: String) -> String {
++        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
++        // Keep malformed pasted input visible instead of changing its meaning.
++        guard trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return trimmed }
+         let sanitized = value.filter { $0.isWholeNumber || $0 == ":" }
+         guard !sanitized.isEmpty else { return "" }
+ 
+@@ -390,7 +397,7 @@
+ 
+     public static func parseFlexiblePaceToSeconds(_ value: String) -> Int? {
+         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+-        guard !trimmed.isEmpty else { return nil }
++        guard !trimmed.isEmpty, trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return nil }
+ 
+         if !trimmed.contains(":") {
+             let digits = onlyDigits(trimmed)
+@@ -432,7 +439,7 @@
+ 
+     public static func parseTargetTimeToSeconds(_ value: String) -> Int? {
+         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+-        guard !trimmed.isEmpty else { return nil }
++        guard !trimmed.isEmpty, trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return nil }
+ 
+         let digits = onlyDigits(trimmed)
+ 
+@@ -584,6 +591,8 @@
+     }
+ 
+     public static func calculateIntervalsTotalDistance(_ config: IntervalsConfig, targetUnit: DistanceUnit) -> Double {
++        // Match the web calculator: convert and round each distance step before
++        // multiplying repeats. The total adds the same rounded distances users see.
+         let fixedTotal = [config.warmup, config.cooldown].reduce(0.0) { total, section in
+             guard section.goalType == .distance,
+                   let distance = section.distance,

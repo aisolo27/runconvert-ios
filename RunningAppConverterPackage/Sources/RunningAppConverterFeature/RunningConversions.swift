@@ -269,12 +269,13 @@ public enum RunningConversions {
         guard unit != targetUnit else { return seconds }
 
         let converted = unit == .km ? Double(seconds) * miToKm : Double(seconds) / miToKm
+        guard converted.isFinite, converted >= 0, converted.rounded() < Double(Int.max) else { return 0 }
         return Int(converted.rounded())
     }
 
     public static func parseDistance(_ value: String, requirePositive: Bool = false) -> Double? {
         let normalized = value.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
-        guard let number = Double(normalized), number.isFinite else { return nil }
+        guard let number = Double(normalized), number.isFinite, number >= 0, number <= 1_000_000_000 else { return nil }
         guard !requirePositive || number > 0 else { return nil }
         return number
     }
@@ -287,6 +288,10 @@ public enum RunningConversions {
         for character in normalized {
             if character.isWholeNumber {
                 output.append(character)
+            } else if character == "-" {
+                // Preserve a pasted sign so validation can reject a negative distance;
+                // stripping it would silently turn -1 into a valid positive 1.
+                output.append(character)
             } else if character == ".", !hasDecimal {
                 output.append(character)
                 hasDecimal = true
@@ -297,6 +302,9 @@ public enum RunningConversions {
     }
 
     public static func sanitizePaceInput(_ value: String) -> String {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Keep malformed pasted input visible instead of changing its meaning.
+        guard trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return trimmed }
         let sanitized = value.filter { $0.isWholeNumber || $0 == ":" }
         guard !sanitized.isEmpty else { return "" }
 
@@ -389,7 +397,7 @@ public enum RunningConversions {
 
     public static func parseFlexiblePaceToSeconds(_ value: String) -> Int? {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
+        guard !trimmed.isEmpty, trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return nil }
 
         if !trimmed.contains(":") {
             let digits = onlyDigits(trimmed)
@@ -431,7 +439,7 @@ public enum RunningConversions {
 
     public static func parseTargetTimeToSeconds(_ value: String) -> Int? {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
+        guard !trimmed.isEmpty, trimmed.allSatisfy({ $0.isWholeNumber || $0 == ":" }) else { return nil }
 
         let digits = onlyDigits(trimmed)
 
@@ -455,7 +463,8 @@ public enum RunningConversions {
         }
 
         let parts = trimmed.split(separator: ":", omittingEmptySubsequences: false)
-        guard (2...3).contains(parts.count), parts.allSatisfy({ !$0.isEmpty }) else { return nil }
+        guard (2...3).contains(parts.count),
+              parts.allSatisfy({ !$0.isEmpty && $0.count <= 6 && $0.allSatisfy(\.isNumber) }) else { return nil }
 
         let numericParts = parts.compactMap { Int($0) }
         guard numericParts.count == parts.count, numericParts.allSatisfy({ $0 >= 0 }) else { return nil }
@@ -485,7 +494,8 @@ public enum RunningConversions {
         }
 
         let parts = trimmed.split(separator: ":", omittingEmptySubsequences: false)
-        guard (2...3).contains(parts.count), parts.allSatisfy({ !$0.isEmpty }) else { return nil }
+        guard (2...3).contains(parts.count),
+              parts.allSatisfy({ !$0.isEmpty && $0.count <= 6 && $0.allSatisfy(\.isNumber) }) else { return nil }
 
         let values = parts.compactMap { Int($0) }
         guard values.count == parts.count, values.allSatisfy({ $0 >= 0 }) else { return nil }
@@ -505,7 +515,8 @@ public enum RunningConversions {
     }
 
     public static func formatTime(_ totalSeconds: Double) -> String {
-        let safeSeconds = max(0, Int(totalSeconds.rounded()))
+        guard totalSeconds.isFinite, totalSeconds >= 0, totalSeconds.rounded() < Double(Int.max) else { return "--:--" }
+        let safeSeconds = Int(totalSeconds.rounded())
         let hours = safeSeconds / 3_600
         let minutes = (safeSeconds % 3_600) / 60
         let seconds = safeSeconds % 60
@@ -526,6 +537,7 @@ public enum RunningConversions {
     }
 
     public static func estimateTimeRange(distances: [Double], paceSeconds: [Int]) -> String {
+        guard !distances.isEmpty, !paceSeconds.isEmpty else { return "--:--" }
         let distanceRange = orderedRange(distances.count == 2 ? distances : [distances[0], distances[0]])
         let paceRange = orderedRange(paceSeconds.map(Double.init).count == 2 ? paceSeconds.map(Double.init) : [Double(paceSeconds[0]), Double(paceSeconds[0])])
         return "\(formatTime(distanceRange.lower * paceRange.lower)) - \(formatTime(distanceRange.upper * paceRange.upper))"
@@ -536,6 +548,7 @@ public enum RunningConversions {
     }
 
     public static func targetPaceRange(distances: [Double], targetTimes: [Int]) -> String {
+        guard !distances.isEmpty, !targetTimes.isEmpty else { return "--:--" }
         let distanceRange = orderedRange(distances.count == 2 ? distances : [distances[0], distances[0]])
         let timeRange = orderedRange(targetTimes.map(Double.init).count == 2 ? targetTimes.map(Double.init) : [Double(targetTimes[0]), Double(targetTimes[0])])
         let fastestPace = timeRange.lower / distanceRange.upper
@@ -548,7 +561,7 @@ public enum RunningConversions {
 
         let converted = unit == .km ? distance / 1.609344 : distance * 1.609344
         let rounded = (converted * 10).rounded() / 10
-        return rounded.rounded() == rounded ? String(Int(rounded)) : String(format: "%.1f", rounded)
+        return rounded.rounded() == rounded ? String(format: "%.0f", rounded) : String(format: "%.1f", rounded)
     }
 
     public static func buildNormalRunSummary(_ config: NormalRunConfig, sourceUnit: DistanceUnit, targetUnit: DistanceUnit) -> [String] {
@@ -578,6 +591,8 @@ public enum RunningConversions {
     }
 
     public static func calculateIntervalsTotalDistance(_ config: IntervalsConfig, targetUnit: DistanceUnit) -> Double {
+        // Match the web calculator: convert and round each distance step before
+        // multiplying repeats. The total adds the same rounded distances users see.
         let fixedTotal = [config.warmup, config.cooldown].reduce(0.0) { total, section in
             guard section.goalType == .distance,
                   let distance = section.distance,
@@ -672,6 +687,6 @@ public enum RunningConversions {
     }
 
     private static func formatCleanNumber(_ value: Double) -> String {
-        value.rounded() == value ? String(Int(value)) : String(format: "%.2f", value)
+        value.rounded() == value ? String(format: "%.0f", value) : String(format: "%.2f", value)
     }
 }

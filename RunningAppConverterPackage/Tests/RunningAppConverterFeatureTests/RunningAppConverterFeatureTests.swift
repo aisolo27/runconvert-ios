@@ -74,3 +74,16 @@ import Testing
 
     #expect(RunningConversions.calculateIntervalsTotalDistance(config, targetUnit: .km) == 3.0)
 }
+
+@Test func extremeInputsDoNotOverflowCalculations() {
+    #expect(RunningConversions.parseDistance("999999999999999999999999") == nil)
+    #expect(RunningConversions.parseDistance("-1") == nil)
+    #expect(RunningConversions.parseDistance("0.001", requirePositive: true) == 0.001)
+    #expect(RunningConversions.formatTime(.infinity) == "--:--")
+    #expect(RunningConversions.formatTime(.nan) == "--:--")
+    #expect(RunningConversions.targetPace(distance: 0.00000000000000000001, targetTimeSeconds: 1200) == "--:--")
+    #expect(RunningConversions.parseTargetTimeToSeconds("999999999999999999:00") == nil)
+    #expect(RunningConversions.normalizeDuration("999999999999999999:00") == nil)
+    #expect(RunningConversions.estimateTimeRange(distances: [], paceSeconds: []) == "--:--")
+    #expect(RunningConversions.targetPaceRange(distances: [], targetTimes: []) == "--:--")
+}

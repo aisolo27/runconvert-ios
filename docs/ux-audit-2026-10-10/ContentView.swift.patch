@@ -1,0 +1,577 @@
+--- /tmp/runconvert-ux-audit-before/ContentView.swift	2026-10-10 23:02:17
++++ /Users/adrielsolorzano/Documents/Codex Projects/ios convertor running distances/RunningAppConverterPackage/Sources/RunningAppConverterFeature/ContentView.swift	2026-10-10 23:38:20
+@@ -52,7 +52,7 @@
+         ConverterScrollView(title: "Pace Converter") {
+             RunConvertBrandHeader(hasShownReveal: $hasShownBrandReveal)
+ 
+-            ConverterCard {
++            ConverterCard(identifier: "pace.card") {
+                 SectionHeader(title: "Pace Converter", systemImage: "speedometer")
+ 
+                 Picker("Pace mode", selection: $mode) {
+@@ -60,6 +60,7 @@
+                     Text("Pace Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Pace mode")
+                 .onChange(of: mode) { _, _ in resetResult() }
+ 
+                 if mode == .single {
+@@ -131,9 +132,14 @@
+     private func convert() {
+         if mode == .range {
+             guard let startSeconds = RunningConversions.parseFlexiblePaceToSeconds(rangeStartInput),
+-                  let endSeconds = RunningConversions.parseFlexiblePaceToSeconds(rangeEndInput)
++                  let endSeconds = RunningConversions.parseFlexiblePaceToSeconds(rangeEndInput), startSeconds > 0, endSeconds > 0
+             else {
+                 error = "Enter a valid faster and slower pace range."
++                return
++            }
++
++            guard startSeconds <= endSeconds else {
++                error = "Faster pace must be at or below Slower pace."
+                 return
+             }
+ 
+@@ -144,8 +150,8 @@
+             return
+         }
+ 
+-        guard let seconds = RunningConversions.parseFlexiblePaceToSeconds(input) else {
+-            error = "Enter a valid pace like 7:40 or 605."
++        guard let seconds = RunningConversions.parseFlexiblePaceToSeconds(input), seconds > 0 else {
++            error = "Enter a pace greater than zero in minutes:seconds, like 5:30."
+             return
+         }
+ 
+@@ -183,7 +189,7 @@
+ 
+     var body: some View {
+         ConverterScrollView(title: "Distance Converter") {
+-            ConverterCard {
++            ConverterCard(identifier: "distance.card") {
+                 SectionHeader(title: "Distance Converter", systemImage: "ruler")
+ 
+                 Picker("Distance mode", selection: $mode) {
+@@ -191,6 +197,7 @@
+                     Text("Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Distance mode")
+                 .onChange(of: mode) { _, _ in resetResult() }
+ 
+                 if mode == .single {
+@@ -265,6 +272,11 @@
+                   let end = RunningConversions.parseDistance(rangeEndInput)
+             else {
+                 error = "Enter a valid distance range."
++                return
++            }
++
++            guard start <= end else {
++                error = "From distance must be at or below To distance."
+                 return
+             }
+ 
+@@ -307,7 +319,7 @@
+     private let presets = [
+         TargetDistancePreset(label: "5K", km: "5", mi: "3.1"),
+         TargetDistancePreset(label: "10K", km: "10", mi: "6.2"),
+-        TargetDistancePreset(label: "Half", km: "21.1", mi: "13.1"),
++        TargetDistancePreset(label: "Half Marathon", km: "21.1", mi: "13.1"),
+         TargetDistancePreset(label: "Marathon", km: "42.2", mi: "26.2")
+     ]
+ 
+@@ -328,15 +340,15 @@
+     @State private var targetDistanceInput = ""
+     @State private var targetDistanceFromInput = ""
+     @State private var targetDistanceToInput = ""
+-    @State private var targetTimeInput = ""
+-    @State private var targetTimeFromInput = ""
+-    @State private var targetTimeToInput = ""
++    @State private var targetTimeInput = DurationEntry()
++    @State private var targetTimeFromInput = DurationEntry()
++    @State private var targetTimeToInput = DurationEntry()
+     @State private var targetResult: String?
+     @State private var targetError = ""
+ 
+     var body: some View {
+         ConverterScrollView(title: "Time Converter") {
+-            ConverterCard {
++            ConverterCard(identifier: "time.estimate") {
+                 SectionHeader(title: "Time Estimator", systemImage: "timer")
+ 
+                 Picker("Pace estimate mode", selection: $paceMode) {
+@@ -344,6 +356,7 @@
+                     Text("Pace Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Pace estimate mode")
+                 .onChange(of: paceMode) { _, _ in resetEstimate() }
+ 
+                 Picker("Distance estimate mode", selection: $distanceMode) {
+@@ -351,6 +364,7 @@
+                     Text("Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Distance estimate mode")
+                 .onChange(of: distanceMode) { _, _ in resetEstimate() }
+ 
+                 timeEstimateInputs
+@@ -371,7 +385,7 @@
+                 InlineError(estimateError)
+             }
+ 
+-            ConverterCard {
++            ConverterCard(identifier: "time.target") {
+                 SectionHeader(title: "Target Pace", systemImage: "scope")
+ 
+                 // Presets remain readable and tappable as text grows; four fixed columns
+@@ -401,6 +415,7 @@
+                     Text("Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Target distance mode")
+                 .onChange(of: targetDistanceMode) { _, _ in resetTarget() }
+ 
+                 Picker("Target time mode", selection: $targetTimeMode) {
+@@ -408,6 +423,7 @@
+                     Text("Range").tag(ConversionInputMode.range)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Target time mode")
+                 .onChange(of: targetTimeMode) { _, _ in resetTarget() }
+ 
+                 targetPaceInputs
+@@ -553,35 +569,23 @@
+             }
+ 
+             if targetTimeMode == .single {
+-                PlainTextField(
++                DurationEntryField(
+                     label: "Target Time",
+-                    placeholder: "20:00",
+-                    text: $targetTimeInput,
+-                    keyboardType: .numberPad
++                    entry: $targetTimeInput
+                 )
+-                .onChange(of: targetTimeInput) { _, value in
+-                    updateTargetTimeInput(value, binding: $targetTimeInput, error: $targetError)
+-                }
++                .onChange(of: targetTimeInput) { _, _ in resetTarget() }
+             } else {
+-                PlainTextField(
++                DurationEntryField(
+                     label: "From Time",
+-                    placeholder: "20:00",
+-                    text: $targetTimeFromInput,
+-                    keyboardType: .numberPad
++                    entry: $targetTimeFromInput
+                 )
+-                .onChange(of: targetTimeFromInput) { _, value in
+-                    updateTargetTimeInput(value, binding: $targetTimeFromInput, error: $targetError)
+-                }
++                .onChange(of: targetTimeFromInput) { _, _ in resetTarget() }
+ 
+-                PlainTextField(
++                DurationEntryField(
+                     label: "To Time",
+-                    placeholder: "22:00",
+-                    text: $targetTimeToInput,
+-                    keyboardType: .numberPad
++                    entry: $targetTimeToInput
+                 )
+-                .onChange(of: targetTimeToInput) { _, value in
+-                    updateTargetTimeInput(value, binding: $targetTimeToInput, error: $targetError)
+-                }
++                .onChange(of: targetTimeToInput) { _, _ in resetTarget() }
+             }
+         }
+     }
+@@ -606,16 +610,6 @@
+         error.wrappedValue = ""
+     }
+ 
+-    private func updateTargetTimeInput(_ value: String, binding: Binding<String>, error: Binding<String>) {
+-        let sanitized = RunningConversions.sanitizeTargetTimeInput(value)
+-        if sanitized != value {
+-            binding.wrappedValue = sanitized
+-        }
+-        estimateResult = nil
+-        targetResult = nil
+-        error.wrappedValue = ""
+-    }
+-
+     private func estimateTime() {
+         let distanceValues = distanceMode == .range
+             ? [RunningConversions.parseDistance(distanceFromInput, requirePositive: true), RunningConversions.parseDistance(distanceToInput, requirePositive: true)]
+@@ -637,6 +631,18 @@
+ 
+         let distances = distanceValues.compactMap(\.self)
+         let paces = paceValues.compactMap(\.self)
++        guard paces.allSatisfy({ $0 > 0 }) else {
++            estimateError = "Enter a pace greater than zero."
++            return
++        }
++        guard distances.count < 2 || distances[0] <= distances[1] else {
++            estimateError = "From distance must be at or below To distance."
++            return
++        }
++        guard paces.count < 2 || paces[0] <= paces[1] else {
++            estimateError = "Faster pace must be at or below Slower pace."
++            return
++        }
+         estimateResult = distanceMode == .range || paceMode == .range
+             ? RunningConversions.estimateTimeRange(distances: distances, paceSeconds: paces)
+             : RunningConversions.estimateTime(distance: distances[0], paceSeconds: paces[0])
+@@ -649,8 +655,8 @@
+             : [RunningConversions.parseDistance(targetDistanceInput, requirePositive: true)]
+ 
+         let timeValues = targetTimeMode == .range
+-            ? [RunningConversions.parseTargetTimeToSeconds(targetTimeFromInput), RunningConversions.parseTargetTimeToSeconds(targetTimeToInput)]
+-            : [RunningConversions.parseTargetTimeToSeconds(targetTimeInput)]
++            ? [targetTimeFromInput.totalSeconds, targetTimeToInput.totalSeconds]
++            : [targetTimeInput.totalSeconds]
+ 
+         guard distanceValues.allSatisfy({ $0 != nil }) else {
+             targetError = targetDistanceMode == .range ? "Enter a valid distance range." : "Enter a valid distance."
+@@ -658,12 +664,21 @@
+         }
+ 
+         guard timeValues.allSatisfy({ $0 != nil }) else {
+-            targetError = targetTimeMode == .range ? "Enter a valid target time range." : "Enter a valid target time."
++            let entries = targetTimeMode == .range ? [targetTimeFromInput, targetTimeToInput] : [targetTimeInput]
++            targetError = entries.compactMap(\.validationMessage).first ?? "Enter a target time using Hours, Minutes, and Seconds."
+             return
+         }
+ 
+         let distances = distanceValues.compactMap(\.self)
+         let times = timeValues.compactMap(\.self)
++        guard distances.count < 2 || distances[0] <= distances[1] else {
++            targetError = "From distance must be at or below To distance."
++            return
++        }
++        guard times.count < 2 || times[0] <= times[1] else {
++            targetError = "From Time must be at or below To Time."
++            return
++        }
+         targetResult = targetDistanceMode == .range || targetTimeMode == .range
+             ? RunningConversions.targetPaceRange(distances: distances, targetTimes: times)
+             : RunningConversions.targetPace(distance: distances[0], targetTimeSeconds: times[0])
+@@ -704,9 +719,9 @@
+         targetDistanceInput = ""
+         targetDistanceFromInput = ""
+         targetDistanceToInput = ""
+-        targetTimeInput = ""
+-        targetTimeFromInput = ""
+-        targetTimeToInput = ""
++        targetTimeInput = DurationEntry()
++        targetTimeFromInput = DurationEntry()
++        targetTimeToInput = DurationEntry()
+         resetTarget()
+     }
+ }
+@@ -732,7 +747,7 @@
+ 
+     var body: some View {
+         ConverterScrollView(title: "Workout Converter") {
+-            ConverterCard {
++            ConverterCard(identifier: "workout.card") {
+                 SectionHeader(title: "Workout Converter", systemImage: "figure.run")
+ 
+                 Picker("Workout mode", selection: $mode) {
+@@ -740,6 +755,7 @@
+                     Text("Intervals").tag(WorkoutMode.intervals)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Workout mode")
+                 .onChange(of: mode) { _, _ in clearOutput() }
+ 
+                 if mode == .normal {
+@@ -792,6 +808,7 @@
+                     }
+                 }
+                 .pickerStyle(.menu)
++                .accessibilityIdentifier("workout.normal.unit")
+                 .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 140, alignment: .leading)
+                 .frame(minHeight: 44)
+                 .onChange(of: normalUnit) { _, _ in clearOutput() }
+@@ -808,6 +825,7 @@
+                 Text("Miles").tag(DistanceUnit.mi)
+             }
+             .pickerStyle(.segmented)
++            .accessibilityIdentifier("workout.output.unit")
+             .onChange(of: outputUnit) { _, _ in clearOutput() }
+ 
+             IntervalSectionEditor(section: $warmup)
+@@ -980,6 +998,7 @@
+         .scrollDismissesKeyboard(.interactively)
+         .environment(\.converterFieldFocus, $focusedField)
+         .numericKeyboardDismissBar(focus: $focusedField)
++        .onDisappear { focusedField = nil }
+         .toolbar {
+             ToolbarItem(placement: .topBarTrailing) {
+                 Button("Privacy Policy", systemImage: "hand.raised") {
+@@ -1013,6 +1032,7 @@
+ }
+ 
+ private struct ConverterCard<Content: View>: View {
++    var identifier = ""
+     @ViewBuilder var content: Content
+ 
+     var body: some View {
+@@ -1026,6 +1046,8 @@
+             RoundedRectangle(cornerRadius: 10, style: .continuous)
+                 .stroke(Color(.separator).opacity(0.35), lineWidth: 1)
+         }
++        .accessibilityElement(children: .contain)
++        .accessibilityIdentifier(identifier)
+     }
+ }
+ 
+@@ -1058,7 +1080,7 @@
+                 .foregroundStyle(.secondary)
+ 
+             AdaptiveFieldRow {
+-                TextField(placeholder, text: $text)
++                TextField(keyboardType == .numberPad ? "m:ss" : placeholder, text: $text)
+                     .keyboardType(keyboardType)
+                     .submitLabel(.done)
+                     .textInputAutocapitalization(.never)
+@@ -1095,7 +1117,80 @@
+                 RoundedRectangle(cornerRadius: 10, style: .continuous)
+                     .stroke(Color(.separator).opacity(0.5), lineWidth: 1)
+             }
++
++            if keyboardType == .numberPad {
++                if !text.isEmpty, RunningConversions.parseFlexiblePaceToSeconds(text) == nil {
++                    Text("Use minutes:seconds, with seconds from 0 to 59.")
++                        .font(.footnote)
++                        .foregroundStyle(.red)
++                } else if !text.isEmpty, !text.contains(":"), let seconds = RunningConversions.parseFlexiblePaceToSeconds(text) {
++                    Text("\(seconds / 60) min \(seconds % 60) sec \(unitLabel)")
++                        .font(.footnote)
++                        .foregroundStyle(.secondary)
++                } else if text.isEmpty {
++                    Text("Minutes:seconds. Type 530 for 5:30.")
++                        .font(.footnote)
++                        .foregroundStyle(.secondary)
++                }
++            }
++        }
++    }
++}
++
++private struct DurationEntryField: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
++    let label: String
++    @Binding var entry: DurationEntry
++
++    var body: some View {
++        VStack(alignment: .leading, spacing: 8) {
++            Text(label).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
++            let layout = dynamicTypeSize.isAccessibilitySize
++                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
++                : AnyLayout(HStackLayout(alignment: .top, spacing: 10))
++            layout {
++                ForEach(DurationEntry.Component.allCases, id: \.self) { component in
++                    DurationComponentField(label: label, component: component, entry: $entry)
++                }
++            }
++
++            if let message = entry.validationMessage {
++                Text(message).font(.footnote).foregroundStyle(.red)
++            } else if let clock = entry.clock, let description = entry.description {
++                Text("\(clock) · \(description)").font(.footnote).foregroundStyle(.secondary)
++            } else {
++                Text("Blank parts count as zero. For 1 hr 35 min, enter Hours 1 and Minutes 35.")
++                    .font(.footnote).foregroundStyle(.secondary)
++            }
++        }
++        .accessibilityElement(children: .contain)
++    }
++}
++
++private struct DurationComponentField: View {
++    @State private var fieldIdentifier = UUID()
++    let label: String
++    let component: DurationEntry.Component
++    @Binding var entry: DurationEntry
++
++    var body: some View {
++        VStack(alignment: .leading, spacing: 6) {
++            Text(component.title).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
++            TextField(component.placeholder, text: Binding(
++                get: { entry[component] },
++                set: { entry.update($0, component: component) }
++            ))
++            .keyboardType(.numberPad)
++            .textInputAutocapitalization(.never)
++            .font(.title3.monospacedDigit())
++            .modifier(ConverterKeyboardFocus(identifier: fieldIdentifier))
++            .accessibilityLabel("\(label), \(component.title)")
++            .padding(12)
++            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
++            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
++            .overlay { RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Color(.separator).opacity(0.5), lineWidth: 1) }
+         }
++        .frame(maxWidth: .infinity, alignment: .leading)
+     }
+ }
+ 
+@@ -1148,6 +1243,10 @@
+     func body(content: Content) -> some View {
+         if let focus {
+             content.focused(focus, equals: identifier)
++                .onDisappear {
++                    // A removed field must not leave keyboard ownership in its old mode.
++                    if focus.wrappedValue == identifier { focus.wrappedValue = nil }
++                }
+         } else {
+             content
+         }
+@@ -1311,14 +1410,14 @@
+         case .none:
+             return PaceTarget(mode: .none)
+         case .value:
+-            guard let value = RunningConversions.parseFlexiblePaceToSeconds(valueText) else {
++            guard let value = RunningConversions.parseFlexiblePaceToSeconds(valueText), value > 0 else {
+                 throw ConverterValidationError("Enter pace as m:ss.")
+             }
+             return PaceTarget(mode: .value, unit: includeUnit ? unit : nil, value: value)
+         case .range:
+             guard let faster = RunningConversions.parseFlexiblePaceToSeconds(fasterText),
+                   let slower = RunningConversions.parseFlexiblePaceToSeconds(slowerText),
+-                  faster <= slower
++                  faster > 0, slower > 0, faster <= slower
+             else {
+                 throw ConverterValidationError("Enter a valid faster and slower pace range.")
+             }
+@@ -1340,7 +1439,7 @@
+     var goalType: GoalType
+     var distanceText: String
+     var unit: WorkoutDistanceUnit
+-    var durationText: String
++    var durationInput: DurationEntry
+     var paceTarget: EditablePaceTarget
+ 
+     static func warmup(defaultUnit: DistanceUnit) -> EditableIntervalSection {
+@@ -1350,7 +1449,7 @@
+             goalType: .distance,
+             distanceText: "1",
+             unit: defaultUnit == .mi ? .mi : .km,
+-            durationText: "",
++            durationInput: DurationEntry(),
+             paceTarget: EditablePaceTarget(mode: .range, unit: defaultUnit, fasterText: "6:00", slowerText: "6:30")
+         )
+     }
+@@ -1362,7 +1461,7 @@
+             goalType: .open,
+             distanceText: "",
+             unit: defaultUnit == .mi ? .mi : .km,
+-            durationText: "",
++            durationInput: DurationEntry(),
+             paceTarget: EditablePaceTarget()
+         )
+     }
+@@ -1375,7 +1474,7 @@
+                 goalType: .time,
+                 distanceText: "",
+                 unit: .km,
+-                durationText: "02:00",
++                durationInput: DurationEntry(minutes: "2"),
+                 paceTarget: EditablePaceTarget()
+             )
+         }
+@@ -1386,7 +1485,7 @@
+             goalType: .distance,
+             distanceText: "400",
+             unit: .m,
+-            durationText: "",
++            durationInput: DurationEntry(),
+             paceTarget: EditablePaceTarget(mode: .value, unit: .km, valueText: "4:30")
+         )
+     }
+@@ -1416,8 +1515,8 @@
+                 paceTarget: resolvedTarget
+             )
+         case .time:
+-            guard let duration = RunningConversions.normalizeDuration(durationText) else {
+-                throw ConverterValidationError("\(label): enter time as mm:ss or hh:mm:ss.")
++            guard let duration = durationInput.clock else {
++                throw ConverterValidationError("\(label): \(durationInput.validationMessage ?? "enter Hours, Minutes, and Seconds for a time greater than zero.")")
+             }
+ 
+             return IntervalSection(
+@@ -1523,6 +1622,7 @@
+                 }
+             }
+             .pickerStyle(.segmented)
++            .accessibilityIdentifier("Effort")
+ 
+             if target.mode == .value {
+                 UnitTextField(
+@@ -1625,6 +1725,7 @@
+                     Text("Recovery").tag(IntervalSectionRole.recovery)
+                 }
+                 .pickerStyle(.segmented)
++                .accessibilityIdentifier("Step Role")
+             }
+ 
+             Picker("Goal Type", selection: $section.goalType) {
+@@ -1633,6 +1734,7 @@
+                 }
+             }
+             .pickerStyle(.segmented)
++            .accessibilityIdentifier("Goal Type")
+ 
+             if section.goalType == .distance {
+                 AdaptiveFieldRow {
+@@ -1652,21 +1754,17 @@
+                         }
+                     }
+                     .pickerStyle(.menu)
++                    .accessibilityIdentifier("interval.unit")
+                     .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 128, alignment: .leading)
+                     .frame(minHeight: 44)
+                 }
+             }
+ 
+             if section.goalType == .time {
+-                PlainTextField(
+-                    label: "Time",
+-                    placeholder: "02:00",
+-                    text: $section.durationText,
+-                    keyboardType: .numberPad
++                DurationEntryField(
++                    label: "\(section.label) Time",
++                    entry: $section.durationInput
+                 )
+-                .onChange(of: section.durationText) { _, value in
+-                    section.durationText = RunningConversions.sanitizeDurationInput(value)
+-                }
+             }
+ 
+             PaceTargetEditor(target: $section.paceTarget, showUnit: true, defaultUnit: section.unit.mainUnit)
+@@ -1677,6 +1775,8 @@
+             RoundedRectangle(cornerRadius: 10, style: .continuous)
+                 .stroke(Color(.separator).opacity(0.4), lineWidth: 1)
+         }
++        .accessibilityElement(children: .contain)
++        .accessibilityIdentifier("workout.section.\(section.label).\(section.id)")
+     }
+ 
+     private var roleBinding: Binding<IntervalSectionRole> {
+@@ -1709,8 +1809,12 @@
+ 
+             Text("\(RunningConversions.formatDistance(totalDistance)) \(unit.rawValue) total")
+                 .font(.headline.monospacedDigit())
++                .accessibilityIdentifier("workout.total")
+ 
+             if let intervalOutput {
++                Text("Distance total includes distance-based steps. Timed and open steps aren't estimated.")
++                    .font(.footnote)
++                    .foregroundStyle(.secondary)
+                 Text(intervalOutput.warmup)
+ 
+                 ForEach(intervalOutput.blocks, id: \.title) { block in

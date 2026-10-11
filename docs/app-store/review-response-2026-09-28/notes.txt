@@ -1,0 +1,24 @@
+RunConvert 1.0 (build 1): App Review information
+
+1. Screen recording
+I recorded RunConvert 1.0 (build 1) on my physical iPhone running iOS 27.0. The recording starts on the Home Screen, shows me launching the app, and demonstrates the Pace, Distance, Time, and Workout tabs. RunConvert has no accounts, registration, login, user-generated content, paid features, or in-app purchases, so those flows do not apply.
+
+2. Purpose and audience
+RunConvert is a free running calculator for runners and coaches who work with both kilometers and miles. It converts pace, distance, and workout instructions, estimates finish times, and calculates the pace needed for a target finish time. It lets someone translate a training plan or race goal into the units they use without doing the math manually.
+
+3. Setup and main features
+Open the app and use any of the four tabs. No setup, sign-in, permissions, credentials, or sample files are needed. All calculations work offline.
+- Pace: enter a pace or pace range, choose /km or /mi, then tap Convert. For example, 5:00/km converts to 8:03/mi.
+- Distance: enter a distance or range, choose kilometers or miles, then tap Convert. For example, 10 km converts to 6.21 mi.
+- Time: enter distance and pace, then tap Estimate. For example, 10 km at 5:00/km gives 50:00. Scroll down to Target Pace, enter a distance and finish time, then tap Find Pace. A 5 km target of 20:00 gives 4:00/km.
+- Workout: choose Normal Run or Intervals, enter the workout distance and optional pace or pace range, then tap Convert. Normal Run converts between kilometers and miles. In Intervals, choose the output unit. Intervals supports warmup, repeated work/recovery blocks, and cooldown. The result shows the converted workout and total distance for distance-based steps.
+Tap Clear to reset a converter. The hand icon opens the privacy policy.
+
+4. External services
+The app uses Apple's native SwiftUI and Foundation frameworks. Its core calculations run locally and do not use external data providers, authentication services, payment processors, AI services, backend servers, analytics, advertising, or third-party SDKs. Optional privacy and support links open a website hosted on Vercel in the user's browser; that website is not required for any calculation.
+
+5. Regional differences
+The app's features and calculations work consistently across all regions where it is available. Users choose kilometers or miles themselves. There are no location-based features, content restrictions, or regional feature differences.
+
+6. Regulated services and third-party material
+RunConvert is a general running calculator. It does not provide medical services, diagnosis, treatment, or other regulated services, and it does not include protected third-party content requiring authorization.

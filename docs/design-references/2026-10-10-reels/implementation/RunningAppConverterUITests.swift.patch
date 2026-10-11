@@ -1,0 +1,106 @@
+--- /tmp/runconvert-ui-polish-before/RunningAppConverterUITests.swift	2026-10-09 11:53:05
++++ /Users/adrielsolorzano/Documents/Codex Projects/ios convertor running distances/RunningAppConverterUITests/RunningAppConverterUITests.swift	2026-10-10 22:59:25
+@@ -100,4 +100,103 @@
+         XCTAssertFalse(app.staticTexts["6.21"].exists)
+     }
+ 
++    @MainActor
++    func testLargestTextPaceRangeCanConvertAndClear() throws {
++        let app = XCUIApplication()
++        app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
++        app.launch()
++
++        XCTAssertTrue(app.staticTexts["Pace Converter"].waitForExistence(timeout: 5))
++        app.buttons["Pace Range"].tap()
++        enterVisible(app.textFields["Faster (min/km)"], text: "600", in: app)
++        enterVisible(app.textFields["Slower (min/km)"], text: "630", in: app)
++
++        let convert = app.buttons["Convert"]
++        reveal(convert, in: app)
++        XCTAssertGreaterThanOrEqual(convert.frame.height, 44)
++        convert.tap()
++        XCTAssertTrue(app.staticTexts["9:39-10:28"].waitForExistence(timeout: 3))
++
++        let clear = app.buttons["Clear"]
++        reveal(clear, in: app)
++        XCTAssertGreaterThanOrEqual(clear.frame.height, 44)
++        XCTAssertGreaterThanOrEqual(clear.frame.minY, convert.frame.maxY)
++        capture(app, name: "accessibility-pace-range-actions")
++        clear.tap()
++        XCTAssertFalse(app.staticTexts["9:39-10:28"].exists)
++        XCTAssertEqual(app.textFields["Faster (min/km)"].value as? String, "6:00")
++    }
++
++    @MainActor
++    func testLargestTextTimeAndWorkoutRemainUsable() throws {
++        let app = XCUIApplication()
++        app.launchArguments = ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
++        app.launch()
++        app.tabBars.buttons["Time"].tap()
++        enterVisible(app.textFields.matching(identifier: "Distance (km)").firstMatch, text: "10", in: app)
++        enterVisible(app.textFields["Pace (min/km)"], text: "500", in: app)
++        reveal(app.buttons["Estimate"], in: app)
++        app.buttons["Estimate"].tap()
++        XCTAssertTrue(app.staticTexts["50:00"].waitForExistence(timeout: 3))
++        capture(app, name: "accessibility-time")
++
++        app.tabBars.buttons["Workout"].tap()
++        reveal(app.buttons["Convert"], in: app)
++        app.buttons["Convert"].tap()
++        let total = app.staticTexts["4.97 mi total"]
++        XCTAssertTrue(total.waitForExistence(timeout: 3))
++        reveal(total, in: app)
++        capture(app, name: "accessibility-workout")
++    }
++
++    @MainActor
++    func testBrandHeaderDoesNotResetInputAfterBackgroundReturn() throws {
++        let app = XCUIApplication()
++        app.launch()
++        XCTAssertTrue(app.descendants(matching: .any)["runconvert.brand"].waitForExistence(timeout: 5))
++        XCTAssertGreaterThanOrEqual(app.buttons["Change unit, currently /km"].frame.height, 44)
++        enterVisible(app.textFields.firstMatch, text: "500", in: app)
++        app.buttons["Convert"].tap()
++        XCTAssertTrue(app.staticTexts["8:03"].waitForExistence(timeout: 3))
++        XCUIDevice.shared.press(.home)
++        app.activate()
++        XCTAssertTrue(app.staticTexts["8:03"].waitForExistence(timeout: 3))
++        app.tabBars.buttons["Distance"].tap()
++        app.tabBars.buttons["Pace"].tap()
++        XCTAssertTrue(app.staticTexts["8:03"].exists)
++        capture(app, name: "brand-return-pace")
++    }
++
++    @MainActor
++    private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
++        let scroll = app.scrollViews.firstMatch
++        for _ in 0..<12 {
++            if element.isHittable { return }
++            // Small, bidirectional drags avoid jumping past a large-text field.
++            let isAbove = element.frame.midY < scroll.frame.midY
++            let start = scroll.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: isAbove ? 0.35 : 0.7))
++            let end = scroll.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: isAbove ? 0.7 : 0.35))
++            start.press(forDuration: 0.05, thenDragTo: end)
++        }
++        XCTAssertTrue(element.isHittable, "Could not reach \(element)")
++    }
++
++    @MainActor
++    private func enterVisible(_ field: XCUIElement, text: String, in app: XCUIApplication) {
++        reveal(field, in: app)
++        field.tap()
++        field.typeText(text)
++        app.buttons["Done"].tap()
++        let keyboardDismissed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: app.keyboards.firstMatch)
++        XCTAssertEqual(XCTWaiter.wait(for: [keyboardDismissed], timeout: 3), .completed)
++    }
++
++    @MainActor
++    private func capture(_ app: XCUIApplication, name: String) {
++        let attachment = XCTAttachment(screenshot: app.screenshot())
++        attachment.name = name
++        attachment.lifetime = .keepAlways
++        add(attachment)
++    }
++
+ }

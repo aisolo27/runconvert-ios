@@ -6,11 +6,11 @@
 // ==========================================
 // Project Identity
 // ==========================================
-PRODUCT_NAME = RunningAppConverter
+PRODUCT_NAME = RunConvert
 PRODUCT_DISPLAY_NAME = RunConvert
-PRODUCT_BUNDLE_IDENTIFIER = com.adrielsolorzano.runconvert
-MARKETING_VERSION = 0.1.0
-CURRENT_PROJECT_VERSION = 1
+PRODUCT_BUNDLE_IDENTIFIER = com.aisolo.runconvert
+MARKETING_VERSION = 1.0.2
+CURRENT_PROJECT_VERSION = 3
 DEVELOPMENT_TEAM = GQF7RG5Z88
 
 // ==========================================
@@ -33,3 +33,6 @@ INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = portrait
 // ==========================================
 // AI agents can modify Config/RunningAppConverter.entitlements to add capabilities
 CODE_SIGN_ENTITLEMENTS = Config/RunningAppConverter.entitlements
+
+// Public release metadata. No encryption APIs or networking are used.
+INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO

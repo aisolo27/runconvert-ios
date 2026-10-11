@@ -1,0 +1,37 @@
+{
+  "started_date": "2026-10-10",
+  "completed_date": "2026-10-11",
+  "recording_decoded_frames": 3245,
+  "unique_passing_ui_checkpoints": 52,
+  "main_platform": {
+    "simulator": "iPhone 17",
+    "os": "iOS 27.0",
+    "distinct_test_methods_with_passing_results": 31,
+    "broad_run_passed": 28,
+    "broad_run_failed": 3,
+    "focused_reruns_resolved_failures": 3,
+    "runtime_warnings": 0
+  },
+  "narrow_platform": {
+    "simulator": "iPhone 17e",
+    "os": "iOS 26.5",
+    "selected_tests_passed": 15,
+    "failed": 0,
+    "runtime_warnings": 0
+  },
+  "validation": "All targeted methods have passing execution evidence across recorded result bundles; not a single green 31-method suite after harness refinements.",
+  "files": {
+    "RunningAppConverterPackage/Sources/RunningAppConverterFeature/ContentView.swift": "9a4c21d7cf121d8a2a7efabb3426367025f381a01e4d8fe4094396e5677f9937",
+    "RunningAppConverterPackage/Sources/RunningAppConverterFeature/RunningConversions.swift": "9d5b7e493fce636371762589442fee9e0afda55d2599becca39882beefed7974",
+    "RunningAppConverterPackage/Sources/RunningAppConverterFeature/DurationEntry.swift": "e4a7c3f92da35480ca4877cec89546f8dc14e8c3548e80a1020af15cfbdd83bf",
+    "RunningAppConverterPackage/Tests/RunningAppConverterFeatureTests/DurationEntryTests.swift": "d22a6bd0bf02423275424e10137306d73190815c2baae7469c14b06a0a9cd0bb",
+    "RunningAppConverterUITests/RunningAppConverterUITests.swift": "8908a7a3bd2cbf2b14915575de0e0fb3608b4eba7e81e351f57042fa0116a1e6"
+  },
+  "physical_device_installed": false,
+  "committed": false,
+  "pushed": false,
+  "released": false,
+  "original_video_uploaded_externally": false,
+  "local_links_checked": 16,
+  "missing_local_links": 0
+}

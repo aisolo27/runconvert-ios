@@ -16,6 +16,7 @@ Small SwiftUI iOS app for offline running conversions. Keep this file compact.
 - Keep formulas aligned with the old web app behavior: pace, distance, target pace, time estimate, and workout summaries.
 - Pace/time fields should use `.numberPad`; distance fields should use `.decimalPad` for decimals.
 - Do not commit Xcode user data, DerivedData, archives, or signing secrets.
+- Explain non-obvious conversion formulas, rounding rules, input constraints, and platform workarounds beside the implementing Swift code. State the reason and invariant; update or remove the comment when behavior changes. Prefer clear names and tests over comments that repeat the code.
 
 ## Verify
 

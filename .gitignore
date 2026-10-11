@@ -65,3 +65,6 @@ fastlane/test_output
 .DS_Store
 DerivedData/
 .xcodebuildmcp/
+.vercel/
+__pycache__/
+*.xcarchive/

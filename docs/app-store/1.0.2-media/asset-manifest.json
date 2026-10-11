@@ -1,0 +1,157 @@
+{
+  "version": "1.0.2",
+  "build": "3",
+  "date": "2026-10-11",
+  "assets": [
+    {
+      "file": "screenshots/01-pace-light.png",
+      "theme": "light",
+      "source": "native/light/01-pace.png",
+      "source_sha256": "22df147ec2630cabdba7fc75a8d6779e5eaa24f5358cf6d861040a0582edd656",
+      "sha256": "54195047a7e391bff5c409ccaf9f531b1be49004547c11e2c6f3431b642bb3c9",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Your pace. In either unit.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/02-distance-light.png",
+      "theme": "light",
+      "source": "native/light/02-distance.png",
+      "source_sha256": "1950cc81b3e3d6d0a00c6e99f40c0a27fa6cc58ca39bdf1f6137edb2995b40a2",
+      "sha256": "8c6540c819e64e4f421df85f682accc912b4b3957bbad248b0d6b677efe70e6e",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Kilometers. Miles. Sorted.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/03-time-light.png",
+      "theme": "light",
+      "source": "native/light/03-time.png",
+      "source_sha256": "551a9d7c1c62d2f6f1dab5d540b5cf1929a87b0bd04ecc2716a60485a59c7180",
+      "sha256": "72fd7f2b1ed850e25237a974ea351f3f15f6ba866c511e3da71750536d266f1b",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Set your time. Find your race pace.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/04-workout-light.png",
+      "theme": "light",
+      "source": "native/light/04-workout.png",
+      "source_sha256": "a32f94246c1702632046f113f1a544960a23d135601bbc11305fe3a5d13eb64b",
+      "sha256": "de66f9d8edd9a2ce1747ca2fa0a9cc4fec584e4d71b04f9a30c7a7d5bf370010",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Keep the workout. Change the units.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/05-intervals-light.png",
+      "theme": "light",
+      "source": "native/light/05-intervals.png",
+      "source_sha256": "34656c9861d79284640b0c80fc90d20bc5a5cb69b0aa1e576081843fb55f1821",
+      "sha256": "76a4d4fa93c0070e07aa976c889f44e9ed8db6d20eb1f8e26cba4ab3fd5c2ccd",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Work. Recover. Repeat.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/01-pace-dark.png",
+      "theme": "dark",
+      "source": "native/dark/01-pace.png",
+      "source_sha256": "81313ac2237a7d7fdb0aa856ebb894baefbee564b550e6a0f33e5b0362d51d28",
+      "sha256": "a62fda8ab48508104e47690c9501ab371d6e0c80682b6a17f8a8d36c30dcc133",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Your pace. In either unit.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/02-distance-dark.png",
+      "theme": "dark",
+      "source": "native/dark/02-distance.png",
+      "source_sha256": "6a75a332df12d41d5af15badcd8e2cd7cf5544b6bf5f6a8290b8da4c08bd49ee",
+      "sha256": "44762226bc86bb02db29298cd51a99fd35dde4fda6b9a357c5eb155f5423afbc",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Kilometers. Miles. Sorted.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/03-time-dark.png",
+      "theme": "dark",
+      "source": "native/dark/03-time.png",
+      "source_sha256": "681f7d0f16c8fe6efeafabb80df933ee42d3d14369f39cd560fae65eccedb2c6",
+      "sha256": "e1259a6a2846679262d56abe7b29d57ee48beddc9d6e3b2fe4149bad32c9d7ed",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Set your time. Find your race pace.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/04-workout-dark.png",
+      "theme": "dark",
+      "source": "native/dark/04-workout.png",
+      "source_sha256": "8b144321c7ec388a1cc9b5e2b6bb563fe7ea72483ba544220ea7bb7e93ccd090",
+      "sha256": "33bbb36385f70b2c364df01ced6293800ba4fa3378b4f4cb7dd7da5890c6dd02",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Keep the workout. Change the units.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    },
+    {
+      "file": "screenshots/05-intervals-dark.png",
+      "theme": "dark",
+      "source": "native/dark/05-intervals.png",
+      "source_sha256": "ee48f5b684a02a444f9c5f0c6efe2a486b4df7904af571a576b08e5ea4f83cd3",
+      "sha256": "dfaa5b0e57e8a5886b9b3d8993370f299fae5313a77ae43af05b38d4c4cba6de",
+      "dimensions": [
+        1206,
+        2622
+      ],
+      "mode": "RGB",
+      "title": "Work. Recover. Repeat.",
+      "capture": "Actual 1.0.2 Simulator UI; asserted results",
+      "app_ui_generated": false
+    }
+  ]
+}

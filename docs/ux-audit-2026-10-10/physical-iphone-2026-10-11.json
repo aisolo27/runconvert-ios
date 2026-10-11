@@ -1,0 +1,386 @@
+{
+  "date": "2026-10-11",
+  "app": "RunConvert",
+  "physical_phone": "AIS17PM, iOS 27.0.1",
+  "control": "Computer Use through iPhone Mirroring",
+  "mode_checkpoints_passed": 51,
+  "largest_text_checkpoint": "Stopped at owner request; Simulator proof retained. App launch text override removed; iPhone Settings were never changed.",
+  "proof_location": "/Users/adrielsolorzano/Library/Developer/RunConvertReleases/2026-10-11-1.0.2-build-3/iphone-audit",
+  "scope": "Same feature/mode/unit matrix as Simulator with representative equivalent input values. Some range endpoint values differ; totals and ranges were visually checked against those actual inputs.",
+  "keyboard": "Mac hardware-keyboard input through Mirroring; visible Done dismissal verified. Software numeric keyboard behavior is established by the Simulator tests, not physical Mirroring.",
+  "release_build": {
+    "version": "1.0.2",
+    "build": "3",
+    "configuration": "Release",
+    "installed_and_launched": true,
+    "smoke_result": "5:00/km -> 8:03/mi",
+    "normal_text_restored": true
+  },
+  "results": [
+    {
+      "case": "interval-all-time-km",
+      "status": "passed",
+      "evidence": [
+        "interval-all-time-km.png"
+      ]
+    },
+    {
+      "case": "interval-all-time-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-all-time-mi.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Meters-None-out-km",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Meters-None-out-km.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Meters-Single Pace-out-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Meters-Single Pace-out-mi.png"
+      ]
+    },
+    {
+      "case": "reject-zero-and-reversed-pace",
+      "status": "passed",
+      "evidence": [
+        "reject-zero-pace.png",
+        "reject-reversed-pace.png"
+      ]
+    },
+    {
+      "case": "reject-reversed-distance",
+      "status": "passed",
+      "evidence": [
+        "reject-reversed-distance.png"
+      ]
+    },
+    {
+      "case": "reject-135-minutes-and-72-seconds",
+      "status": "passed",
+      "evidence": [
+        "reject-135-minutes.png",
+        "reject-72-seconds.png"
+      ]
+    },
+    {
+      "case": "normal-None-km",
+      "status": "passed",
+      "evidence": [
+        "normal-None-km.png"
+      ]
+    },
+    {
+      "case": "normal-Single Pace-km",
+      "status": "passed",
+      "evidence": [
+        "normal-Single Pace-km.png"
+      ]
+    },
+    {
+      "case": "normal-Pace Range-km",
+      "status": "passed",
+      "evidence": [
+        "normal-Pace Range-km.png"
+      ]
+    },
+    {
+      "case": "normal-None-mi",
+      "status": "passed",
+      "evidence": [
+        "normal-None-mi.png"
+      ]
+    },
+    {
+      "case": "normal-Single Pace-mi",
+      "status": "passed",
+      "evidence": [
+        "normal-Single Pace-mi.png"
+      ]
+    },
+    {
+      "case": "normal-Pace Range-mi",
+      "status": "passed",
+      "evidence": [
+        "normal-Pace Range-mi.png"
+      ]
+    },
+    {
+      "case": "interval-all-open-km",
+      "status": "passed",
+      "evidence": [
+        "interval-all-open-km.png"
+      ]
+    },
+    {
+      "case": "interval-add-role-delete-block-km",
+      "status": "passed",
+      "evidence": [
+        "interval-add-role-delete-block-km.png"
+      ]
+    },
+    {
+      "case": "interval-all-open-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-all-open-mi.png"
+      ]
+    },
+    {
+      "case": "interval-add-role-delete-block-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-add-role-delete-block-mi.png"
+      ]
+    },
+    {
+      "case": "pace-single-km",
+      "status": "passed",
+      "evidence": [
+        "pace-single-km.png"
+      ]
+    },
+    {
+      "case": "pace-range-km",
+      "status": "passed",
+      "evidence": [
+        "pace-range-km.png"
+      ]
+    },
+    {
+      "case": "pace-single-mi",
+      "status": "passed",
+      "evidence": [
+        "pace-single-mi.png"
+      ]
+    },
+    {
+      "case": "pace-range-mi",
+      "status": "passed",
+      "evidence": [
+        "pace-range-mi.png"
+      ]
+    },
+    {
+      "case": "distance-single-km",
+      "status": "passed",
+      "evidence": [
+        "distance-single-km.png"
+      ]
+    },
+    {
+      "case": "distance-range-km",
+      "status": "passed",
+      "evidence": [
+        "distance-range-km.png"
+      ]
+    },
+    {
+      "case": "distance-single-mi",
+      "status": "passed",
+      "evidence": [
+        "distance-single-mi.png"
+      ]
+    },
+    {
+      "case": "distance-range-mi",
+      "status": "passed",
+      "evidence": [
+        "distance-range-mi.png"
+      ]
+    },
+    {
+      "case": "focused-field-mode-removal",
+      "status": "passed",
+      "evidence": [
+        "focused-field-mode-removal.png"
+      ]
+    },
+    {
+      "case": "target-d1-t1-km",
+      "status": "passed",
+      "evidence": [
+        "target-d1-t1-km.png"
+      ]
+    },
+    {
+      "case": "target-d1-t2-km",
+      "status": "passed",
+      "evidence": [
+        "target-d1-t2-km.png"
+      ]
+    },
+    {
+      "case": "target-d2-t1-km",
+      "status": "passed",
+      "evidence": [
+        "target-d2-t1-km.png"
+      ]
+    },
+    {
+      "case": "target-d2-t2-km",
+      "status": "passed",
+      "evidence": [
+        "target-d2-t2-km.png"
+      ]
+    },
+    {
+      "case": "target-d1-t1-mi",
+      "status": "passed",
+      "evidence": [
+        "target-d1-t1-mi.png"
+      ]
+    },
+    {
+      "case": "target-d1-t2-mi",
+      "status": "passed",
+      "evidence": [
+        "target-d1-t2-mi.png"
+      ]
+    },
+    {
+      "case": "target-d2-t1-mi",
+      "status": "passed",
+      "evidence": [
+        "target-d2-t1-mi.png"
+      ]
+    },
+    {
+      "case": "target-d2-t2-mi",
+      "status": "passed",
+      "evidence": [
+        "target-d2-t2-mi.png"
+      ]
+    },
+    {
+      "case": "estimate-d1-p1-km",
+      "status": "passed",
+      "evidence": [
+        "estimate-d1-p1-km.png"
+      ]
+    },
+    {
+      "case": "estimate-d1-p2-km",
+      "status": "passed",
+      "evidence": [
+        "estimate-d1-p2-km.png"
+      ]
+    },
+    {
+      "case": "estimate-d2-p1-km",
+      "status": "passed",
+      "evidence": [
+        "estimate-d2-p1-km.png"
+      ]
+    },
+    {
+      "case": "estimate-d2-p2-km",
+      "status": "passed",
+      "evidence": [
+        "estimate-d2-p2-km.png"
+      ]
+    },
+    {
+      "case": "estimate-d1-p1-mi",
+      "status": "passed",
+      "evidence": [
+        "estimate-d1-p1-mi.png"
+      ]
+    },
+    {
+      "case": "estimate-d1-p2-mi",
+      "status": "passed",
+      "evidence": [
+        "estimate-d1-p2-mi.png"
+      ]
+    },
+    {
+      "case": "estimate-d2-p1-mi",
+      "status": "passed",
+      "evidence": [
+        "estimate-d2-p1-mi.png"
+      ]
+    },
+    {
+      "case": "estimate-d2-p2-mi",
+      "status": "passed",
+      "evidence": [
+        "estimate-d2-p2-mi.png"
+      ]
+    },
+    {
+      "case": "largest-text-half-marathon-95-min",
+      "status": "waived_by_owner",
+      "evidence": []
+    },
+    {
+      "case": "half-marathon-95-min-km",
+      "status": "passed",
+      "evidence": [
+        "half-marathon-95-min-km.png"
+      ]
+    },
+    {
+      "case": "marathon-270-min-km",
+      "status": "passed",
+      "evidence": [
+        "marathon-270-min-km.png"
+      ]
+    },
+    {
+      "case": "half-marathon-95-min-mi",
+      "status": "passed",
+      "evidence": [
+        "half-marathon-95-min-mi.png"
+      ]
+    },
+    {
+      "case": "marathon-270-min-mi",
+      "status": "passed",
+      "evidence": [
+        "marathon-270-min-mi.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Kilometers-Pace Range-out-km",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Kilometers-Pace Range-out-km.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Kilometers-Pace Range-out-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Kilometers-Pace Range-out-mi.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Miles-Single Pace-out-km",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Miles-Single Pace-out-km.png"
+      ]
+    },
+    {
+      "case": "interval-distance-Miles-None-out-mi",
+      "status": "passed",
+      "evidence": [
+        "interval-distance-Miles-None-out-mi.png"
+      ]
+    },
+    {
+      "case": "reject-empty-and-reversed-target-time",
+      "status": "passed",
+      "evidence": [
+        "reject-empty-target-time.png",
+        "reject-reversed-target-time.png"
+      ]
+    }
+  ]
+}

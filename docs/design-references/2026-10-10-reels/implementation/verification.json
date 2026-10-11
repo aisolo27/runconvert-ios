@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-10",
+  "scope": "Local RunConvert UI implementation",
+  "final_source_tests": {
+    "simulator": "iPhone 17e",
+    "runtime": "iOS 26.5",
+    "passed": 15,
+    "failed": 0,
+    "warnings": 0,
+    "xcresult": "/tmp/runconvert-ui-polish-small-final-tests.xcresult"
+  },
+  "ios27_full_suite_before_final_visual_refinements": {
+    "simulator": "iPhone 17",
+    "runtime": "iOS 27.0",
+    "passed": 15,
+    "failed": 0,
+    "warnings": 0,
+    "xcresult": "/tmp/runconvert-ui-polish-final-tests.xcresult"
+  },
+  "ios27_final_build_run": "passed",
+  "reduce_motion_runtime_readback": [
+    "NO",
+    "YES"
+  ],
+  "reduce_motion_preference_restored": "0",
+  "debugger_detached": true,
+  "physical_device_verified": false,
+  "committed": false,
+  "pushed": false,
+  "released": false,
+  "runsignals_changed": false,
+  "skill_installed": false,
+  "files": {
+    "RunningAppConverterPackage/Sources/RunningAppConverterFeature/ContentView.swift": "eba0fd6a3e6fa7c391c09a56816e05794d785f710bf319fe55ff9cc95a15f188",
+    "RunningAppConverterUITests/RunningAppConverterUITests.swift": "409e18ade5b55daa81ab249eaffea491ffa13df2c056059426982fc69dd30ad8",
+    "RunningAppConverter/Assets.xcassets/RunConvertMark.imageset/Contents.json": "c4ae782b8be519ecdc0ed63b5beff0d0afbeee546990c6faa347c4b1451fe56e",
+    "RunningAppConverter/Assets.xcassets/RunConvertMark.imageset/RunConvertMark.png": "377a363a1b9fb9854b8f99186d67d65c2e6d02dd8b27e224213b65236ee7cf99",
+    "RunningAppConverter/Assets.xcassets/RunConvertMark.imageset/RunConvertMark-Dark.png": "d000e4aefcc74aedc9c7e730d0708bb3784c5ff62dde3d960179bed4c5283936"
+  },
+  "captures": {
+    "small-03-time.png": "e7f2dfc172669baaa7b9ebc01d9e36daf24c5337bfbf62d5be137ea2f01f2f65",
+    "small-accessibility-time.png": "641e84e3d5b90e8b427b427a1aefe703103b6743a02bf0611b6a32afd7f62815",
+    "small-accessibility-workout.png": "54c26641433b2623ecee6cbd87604e49e6d7bb40a73e73a0815541b59b180295",
+    "small-brand-return-pace.png": "0b21171b8ecfd4f29f4dfc8a2b529c9af36232e66683c2f567eccc3b29089b76",
+    "small-04-workout.png": "d6f33a9565da205ad7fab0b0a68bb23fa819ecb5d5cd43113777a5948b6b616e",
+    "small-02-distance.png": "ef955ae5393f16184aa382b1eb4a126eb789041234b22a492030e20f5fb9793d",
+    "small-01-pace.png": "37468b58d8386f0086a92ea09f9e799aa66cb9fdacf79cc604c5da0447a87f15",
+    "small-accessibility-pace-range-actions.png": "ebabb380fcccfffef69f72175de8d69a23af03cee0be5d6d2d483792cefde358"
+  },
+  "local_links_checked": 24,
+  "missing_links": 0
+}

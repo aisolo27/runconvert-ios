@@ -1,0 +1,484 @@
+--- /tmp/runconvert-ui-polish-before/ContentView.swift	2026-09-27 19:39:53
++++ /Users/adrielsolorzano/Documents/Codex Projects/ios convertor running distances/RunningAppConverterPackage/Sources/RunningAppConverterFeature/ContentView.swift	2026-10-10 23:02:17
+@@ -1,12 +1,14 @@
+ import SwiftUI
+ 
+ public struct ContentView: View {
++    @State private var hasShownBrandReveal = false
++
+     public init() {}
+ 
+     public var body: some View {
+         TabView {
+             NavigationStack {
+-                PaceConverterScreen()
++                PaceConverterScreen(hasShownBrandReveal: $hasShownBrandReveal)
+             }
+             .tabItem {
+                 Label("Pace", systemImage: "speedometer")
+@@ -37,6 +39,7 @@
+ }
+ 
+ private struct PaceConverterScreen: View {
++    @Binding var hasShownBrandReveal: Bool
+     @State private var mode: ConversionInputMode = .single
+     @State private var selectedUnit: DistanceUnit = .km
+     @State private var input = ""
+@@ -47,6 +50,8 @@
+ 
+     var body: some View {
+         ConverterScrollView(title: "Pace Converter") {
++            RunConvertBrandHeader(hasShownReveal: $hasShownBrandReveal)
++
+             ConverterCard {
+                 SectionHeader(title: "Pace Converter", systemImage: "speedometer")
+ 
+@@ -298,6 +303,7 @@
+ }
+ 
+ private struct TimeConverterScreen: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+     private let presets = [
+         TargetDistancePreset(label: "5K", km: "5", mi: "3.1"),
+         TargetDistancePreset(label: "10K", km: "10", mi: "6.2"),
+@@ -368,7 +374,9 @@
+             ConverterCard {
+                 SectionHeader(title: "Target Pace", systemImage: "scope")
+ 
+-                HStack(spacing: 8) {
++                // Presets remain readable and tappable as text grows; four fixed columns
++                // otherwise squeeze Marathon down to a few letters per line.
++                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: dynamicTypeSize.isAccessibilitySize ? 1 : 2), spacing: 8) {
+                     ForEach(presets) { preset in
+                         Button {
+                             targetDistanceMode = .single
+@@ -379,9 +387,12 @@
+                         } label: {
+                             Text(preset.label)
+                                 .frame(maxWidth: .infinity)
++                                .frame(minHeight: 28)
+                         }
+                         .buttonStyle(.bordered)
+-                        .controlSize(.small)
++                        .controlSize(.regular)
++                        .frame(minHeight: 44)
++                        .contentShape(Rectangle())
+                     }
+                 }
+ 
+@@ -701,6 +712,7 @@
+ }
+ 
+ private struct WorkoutConverterScreen: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+     @State private var mode: WorkoutMode = .normal
+     @State private var normalDistance = "8"
+     @State private var normalUnit: DistanceUnit = .km
+@@ -761,7 +773,7 @@
+ 
+     private var normalRunEditor: some View {
+         VStack(alignment: .leading, spacing: 14) {
+-            HStack(spacing: 10) {
++            AdaptiveFieldRow {
+                 PlainTextField(
+                     label: "Distance",
+                     placeholder: "8",
+@@ -780,7 +792,8 @@
+                     }
+                 }
+                 .pickerStyle(.menu)
+-                .frame(maxWidth: 140)
++                .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 140, alignment: .leading)
++                .frame(minHeight: 44)
+                 .onChange(of: normalUnit) { _, _ in clearOutput() }
+             }
+ 
+@@ -890,9 +903,64 @@
+         clearOutput()
+     }
+ }
++
++private struct RunConvertBrandHeader: View {
++    @Environment(\.accessibilityReduceMotion) private var reduceMotion
++    @Binding var hasShownReveal: Bool
++    @State private var revealed = false
++
++    var body: some View {
++        HStack(spacing: 10) {
++            Image("RunConvertMark")
++                .resizable()
++                .scaledToFit()
++                .frame(width: 36, height: 36)
++                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
++                .accessibilityHidden(true)
+ 
++            Text("RunConvert")
++                .font(.headline)
++                .fixedSize(horizontal: false, vertical: true)
++                .opacity(reduceMotion || revealed ? 1 : 0)
++                .offset(x: reduceMotion || revealed ? 0 : -8)
++        }
++        .frame(maxWidth: .infinity, alignment: .leading)
++        .accessibilityElement(children: .ignore)
++        .accessibilityLabel("RunConvert")
++        .accessibilityAddTraits(.isHeader)
++        .accessibilityIdentifier("runconvert.brand")
++        .onAppear {
++            // Root state survives tab switches and background return. This inline reveal
++            // never covers the calculator or gates interaction behind a splash timer.
++            guard !hasShownReveal else {
++                revealed = true
++                return
++            }
++            hasShownReveal = true
++            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.35)) {
++                revealed = true
++            }
++        }
++    }
++}
++
++private struct AdaptiveFieldRow<Content: View>: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
++    @ViewBuilder var content: Content
++
++    var body: some View {
++        // AnyLayout changes orientation without replacing the fields, preserving
++        // editing state and focus when the user changes their preferred text size.
++        let layout = dynamicTypeSize.isAccessibilitySize
++            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
++            : AnyLayout(HStackLayout(spacing: 10))
++        layout { content }
++    }
++}
++
+ private struct ConverterScrollView<Content: View>: View {
+     @State private var showingPrivacy = false
++    @FocusState private var focusedField: UUID?
+     let title: String
+     @ViewBuilder var content: Content
+ 
+@@ -904,17 +972,14 @@
+                 }
+                 .padding(16)
+                 .frame(maxWidth: .infinity, minHeight: max(0, proxy.size.height), alignment: .topLeading)
+-                .contentShape(Rectangle())
+-                .onTapGesture {
+-                    dismissKeyboard()
+-                }
+             }
+         }
+         .background(Color(.systemGroupedBackground))
+         .navigationTitle(title)
+         .navigationBarTitleDisplayMode(.inline)
+         .scrollDismissesKeyboard(.interactively)
+-        .numericKeyboardDoneToolbar()
++        .environment(\.converterFieldFocus, $focusedField)
++        .numericKeyboardDismissBar(focus: $focusedField)
+         .toolbar {
+             ToolbarItem(placement: .topBarTrailing) {
+                 Button("Privacy Policy", systemImage: "hand.raised") {
+@@ -945,9 +1010,6 @@
+         }
+     }
+ 
+-    private func dismissKeyboard() {
+-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+-    }
+ }
+ 
+ private struct ConverterCard<Content: View>: View {
+@@ -979,12 +1041,15 @@
+ }
+ 
+ private struct UnitTextField: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
++    @State private var fieldIdentifier = UUID()
+     let label: String
+     let placeholder: String
+     @Binding var text: String
+     let unitLabel: String
+     let keyboardType: UIKeyboardType
+     let onUnitTap: () -> Void
++    var allowsUnitChange = true
+ 
+     var body: some View {
+         VStack(alignment: .leading, spacing: 6) {
+@@ -992,16 +1057,37 @@
+                 .font(.caption.weight(.semibold))
+                 .foregroundStyle(.secondary)
+ 
+-            HStack(spacing: 8) {
++            AdaptiveFieldRow {
+                 TextField(placeholder, text: $text)
+                     .keyboardType(keyboardType)
+                     .submitLabel(.done)
+                     .textInputAutocapitalization(.never)
+                     .font(.title2.monospacedDigit())
++                    .modifier(ConverterKeyboardFocus(identifier: fieldIdentifier))
++                    .accessibilityLabel(label)
++                    .frame(maxWidth: .infinity)
+ 
+-                Button(unitLabel, action: onUnitTap)
++                if allowsUnitChange {
++                    Button(action: onUnitTap) {
++                        Text(unitLabel)
++                            .font(.body.monospacedDigit().weight(.semibold))
++                            .frame(minHeight: 28)
++                    }
+                     .buttonStyle(.bordered)
+-                    .font(.body.monospacedDigit().weight(.semibold))
++                    .controlSize(.regular)
++                    .frame(minWidth: 44, minHeight: 44)
++                    .contentShape(Rectangle())
++                    .accessibilityLabel("Change unit, currently \(unitLabel)")
++                    .accessibilityHint("Switch between kilometers and miles.")
++                    .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : nil, alignment: .trailing)
++                } else {
++                    // Normal-run pace follows the distance picker. Show a unit label
++                    // here instead of a button whose action would do nothing.
++                    Text(unitLabel)
++                        .font(.body.monospacedDigit().weight(.semibold))
++                        .foregroundStyle(.secondary)
++                        .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : nil, minHeight: 44, alignment: .trailing)
++                }
+             }
+             .padding(12)
+             .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+@@ -1014,6 +1100,7 @@
+ }
+ 
+ private struct PlainTextField: View {
++    @State private var fieldIdentifier = UUID()
+     let label: String
+     let placeholder: String
+     @Binding var text: String
+@@ -1030,6 +1117,8 @@
+                 .submitLabel(.done)
+                 .textInputAutocapitalization(.never)
+                 .font(.title3.monospacedDigit())
++                .modifier(ConverterKeyboardFocus(identifier: fieldIdentifier))
++                .accessibilityLabel(label)
+                 .padding(12)
+                 .frame(maxWidth: .infinity, alignment: .leading)
+                 .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+@@ -1037,18 +1126,53 @@
+                     RoundedRectangle(cornerRadius: 10, style: .continuous)
+                         .stroke(Color(.separator).opacity(0.5), lineWidth: 1)
+                 }
++        }
++    }
++}
++
++private struct ConverterFieldFocusKey: EnvironmentKey {
++    static var defaultValue: FocusState<UUID?>.Binding? { nil }
++}
++
++private extension EnvironmentValues {
++    var converterFieldFocus: FocusState<UUID?>.Binding? {
++        get { self[ConverterFieldFocusKey.self] }
++        set { self[ConverterFieldFocusKey.self] = newValue }
++    }
++}
++
++private struct ConverterKeyboardFocus: ViewModifier {
++    @Environment(\.converterFieldFocus) private var focus
++    let identifier: UUID
++
++    func body(content: Content) -> some View {
++        if let focus {
++            content.focused(focus, equals: identifier)
++        } else {
++            content
+         }
+     }
+ }
+ 
+ private extension View {
+-    func numericKeyboardDoneToolbar() -> some View {
+-        toolbar {
+-            ToolbarItemGroup(placement: .keyboard) {
+-                Spacer()
+-                Button("Done") {
+-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
++    func numericKeyboardDismissBar(focus: FocusState<UUID?>.Binding) -> some View {
++        // iOS 27's floating keyboard toolbar can report Done at a different location
++        // from its visible button. An inset keeps touch and accessibility bounds aligned,
++        // stays above the keyboard, and allows the chosen text size to grow naturally.
++        safeAreaInset(edge: .bottom, spacing: 0) {
++            if focus.wrappedValue != nil {
++                HStack {
++                    Spacer()
++                    Button("Done") {
++                        focus.wrappedValue = nil
++                    }
++                    .buttonStyle(.bordered)
++                    .controlSize(.large)
++                    .frame(minHeight: 44)
+                 }
++                .padding(.horizontal, 16)
++                .padding(.vertical, 8)
++                .background(.bar)
+             }
+         }
+     }
+@@ -1065,19 +1189,20 @@
+                 .font(.caption.weight(.semibold))
+                 .foregroundStyle(.secondary)
+ 
+-            HStack(alignment: .firstTextBaseline) {
+-                Text(value)
+-                    .font(.system(.title, design: .rounded, weight: .semibold))
+-                    .monospacedDigit()
+-                    .lineLimit(2)
+-                    .minimumScaleFactor(0.72)
++            // Measure the complete inline value before choosing it. Long ranges and
++            // large text get a wrapping, stacked layout instead of smaller digits.
++            ViewThatFits(in: .horizontal) {
++                HStack(alignment: .firstTextBaseline, spacing: 8) {
++                    valueText.fixedSize()
++                    unitText.fixedSize()
++                }
+ 
+-                if !unit.isEmpty {
+-                    Text(unit)
+-                        .font(.callout.weight(.semibold))
+-                        .foregroundStyle(.secondary)
++                VStack(alignment: .leading, spacing: 8) {
++                    valueText.fixedSize(horizontal: false, vertical: true)
++                    unitText
+                 }
+             }
++            .accessibilityElement(children: .contain)
+             .frame(maxWidth: .infinity, alignment: .leading)
+             .padding(14)
+             .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+@@ -1085,27 +1210,61 @@
+                 RoundedRectangle(cornerRadius: 10, style: .continuous)
+                     .stroke(Color(.separator).opacity(0.45), lineWidth: 1)
+             }
++        }
++    }
++
++    private var valueText: some View {
++        Text(displayValue)
++            .font(.system(.title, design: .rounded, weight: .semibold))
++            .monospacedDigit()
++            .accessibilityLabel(value)
++            .accessibilityIdentifier("converter.value.\(label)")
++    }
++
++    private var displayValue: String {
++        let endpoints = value.split(separator: "-", omittingEmptySubsequences: false)
++        guard endpoints.count == 2, endpoints.allSatisfy({ !$0.trimmingCharacters(in: .whitespaces).isEmpty }) else {
++            return value
++        }
++        // Break between complete endpoints rather than halfway through a pace.
++        // Keep the underlying result and placeholder strings unchanged.
++        return endpoints.map { $0.trimmingCharacters(in: .whitespaces) }.joined(separator: " – ")
++    }
++
++    @ViewBuilder
++    private var unitText: some View {
++        if !unit.isEmpty {
++            Text(unit)
++                .font(.callout.weight(.semibold))
++                .foregroundStyle(.secondary)
+         }
+     }
+ }
+ 
+ private struct ActionRow: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+     let primaryTitle: String
+     let primarySystemImage: String
+     let onPrimary: () -> Void
+     let onClear: () -> Void
+ 
+     var body: some View {
+-        HStack(spacing: 10) {
++        let layout = dynamicTypeSize.isAccessibilitySize
++            ? AnyLayout(VStackLayout(spacing: 10))
++            : AnyLayout(HStackLayout(spacing: 10))
++        layout {
+             Button(action: onPrimary) {
+                 Label(primaryTitle, systemImage: primarySystemImage)
+                     .frame(maxWidth: .infinity)
++                    .frame(minHeight: 28)
+             }
+             .buttonStyle(.borderedProminent)
+ 
+             Button(action: onClear) {
+                 Label("Clear", systemImage: "xmark")
+                     .frame(minWidth: 88)
++                    .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : nil)
++                    .frame(minHeight: 28)
+             }
+             .buttonStyle(.bordered)
+         }
+@@ -1372,7 +1531,8 @@
+                     text: $target.valueText,
+                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
+                     keyboardType: .numberPad,
+-                    onUnitTap: toggleUnit
++                    onUnitTap: toggleUnit,
++                    allowsUnitChange: showUnit
+                 )
+                 .onChange(of: target.valueText) { _, value in
+                     target.valueText = RunningConversions.sanitizePaceInput(value)
+@@ -1386,7 +1546,8 @@
+                     text: $target.fasterText,
+                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
+                     keyboardType: .numberPad,
+-                    onUnitTap: toggleUnit
++                    onUnitTap: toggleUnit,
++                    allowsUnitChange: showUnit
+                 )
+                 .onChange(of: target.fasterText) { _, value in
+                     target.fasterText = RunningConversions.sanitizePaceInput(value)
+@@ -1398,7 +1559,8 @@
+                     text: $target.slowerText,
+                     unitLabel: showUnit ? target.unit.paceLabel : defaultUnit.paceLabel,
+                     keyboardType: .numberPad,
+-                    onUnitTap: toggleUnit
++                    onUnitTap: toggleUnit,
++                    allowsUnitChange: showUnit
+                 )
+                 .onChange(of: target.slowerText) { _, value in
+                     target.slowerText = RunningConversions.sanitizePaceInput(value)
+@@ -1427,6 +1589,7 @@
+ }
+ 
+ private struct IntervalSectionEditor<Trailing: View>: View {
++    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+     @Binding var section: EditableIntervalSection
+     var allowRoleChange = false
+     @ViewBuilder var trailing: Trailing
+@@ -1450,7 +1613,7 @@
+                     Text(summaryText)
+                         .font(.caption)
+                         .foregroundStyle(.secondary)
+-                        .lineLimit(2)
++                        .fixedSize(horizontal: false, vertical: true)
+                 }
+                 Spacer()
+                 trailing
+@@ -1472,7 +1635,7 @@
+             .pickerStyle(.segmented)
+ 
+             if section.goalType == .distance {
+-                HStack(spacing: 10) {
++                AdaptiveFieldRow {
+                     PlainTextField(
+                         label: "Distance",
+                         placeholder: section.unit == .m ? "400" : "1",
+@@ -1489,7 +1652,8 @@
+                         }
+                     }
+                     .pickerStyle(.menu)
+-                    .frame(maxWidth: 128)
++                    .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 128, alignment: .leading)
++                    .frame(minHeight: 44)
+                 }
+             }
+ 

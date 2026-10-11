@@ -1,0 +1,31 @@
+{
+  "source": "/Users/adrielsolorzano/Downloads/RPReplay_Final1791678100.MP4",
+  "sha256": "83f6df0b6dac8b06b33b8a1211b32973b403a885f0a5e3bb113a39960befca63",
+  "video_duration_seconds": 54.088333,
+  "container_declared_frames": 3246,
+  "decoded_frames": 3245,
+  "every_decoded_frame_change_scanned": true,
+  "last_decoded_timestamp": 54.071667,
+  "changed_frames": 564,
+  "inspection": "Visual timeline and dense state transitions; not a claim of every frame separately human-reviewed.",
+  "observations": [
+    {
+      "seconds": "12-16",
+      "issue": "Distance numeric keyboard appears without visible Done."
+    },
+    {
+      "seconds": "20-25",
+      "issue": "Time estimator/target numeric keyboard appears without visible Done."
+    },
+    {
+      "seconds": "33-36",
+      "issue": "Target Time shows 45:72, followed by generic target-time validation."
+    },
+    {
+      "seconds": "43-48",
+      "issue": "Half preset and compact minute-only entry make elapsed time interpretation unclear."
+    }
+  ],
+  "user_described_scenario": "135 intended as 1 hour 35 minutes; not a literal value confirmed in the recorded frames.",
+  "state": "Recording shows the earlier interface; physical-device build number not established."
+}
